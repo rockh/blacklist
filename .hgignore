@@ -1,0 +1,9 @@
+# use glob syntax
+syntax: glob
+
+*.bak
+*.swp
+Thumbs.db
+out/
+gen/
+bin/
