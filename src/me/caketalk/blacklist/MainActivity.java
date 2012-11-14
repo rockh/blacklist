@@ -96,6 +96,10 @@ public class MainActivity extends Activity {
 
                         // Refreshes cached blacklist
                         CallReceiver.cachedBlacklist = dao.getAllBlacklist();
+
+                        // Clean the EditText field
+                        etPhone.getEditableText().clear();
+                        etPhone.clearFocus();
                     } else {
                         Toast.makeText(MainActivity.this, "This number has " +
                                 "been in the blacklist.", Toast.LENGTH_LONG).show();
@@ -133,6 +137,10 @@ public class MainActivity extends Activity {
 
                         // Refreshes cached blacklist
                         CallReceiver.cachedBlacklist = dao.getAllBlacklist();
+
+                        // Clean the EditText field
+                        etPhone.getEditableText().clear();
+                        etPhone.clearFocus();
                     } else {
                         Toast.makeText(MainActivity.this, "This number has not" +
                                 " in the blacklist yet.", Toast.LENGTH_LONG).show();
