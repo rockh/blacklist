@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Blacklist</string>
-    <string name="btn_block">Add into Blacklist</string>
-    <string name="btn_unblock">Remove from Blacklist</string>
+    <string name="btn_add">Add into Blacklist</string>
+    <string name="btn_remove">Remove from Blacklist</string>
     <string name="et_phone">Please input a phone number</string>
     <string name="chk_enable">Enable Blacklist Service</string>
 </resources>

@@ -10,9 +10,11 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.Toast;
 import me.caketalk.R;
 import me.caketalk.blacklist.dao.BlacklistDao;
+import me.caketalk.blacklist.model.Blacklist;
 import me.caketalk.blacklist.service.BlacklistService;
 import me.caketalk.blacklist.util.ServiceUtil;
 
@@ -37,6 +39,8 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
+        final BlacklistDao dao = new BlacklistDao(this);
+
         CheckBox checkBox = (CheckBox) findViewById(R.id.chkEnableBlacklist);
 
         // setting radio button status if Blacklist service is running
@@ -51,39 +55,93 @@ public class MainActivity extends Activity {
                     startService(new Intent(MainActivity.this, BlacklistService.class));
                     Toast.makeText(MainActivity.this, "Blacklist service has been enabled.", Toast.LENGTH_LONG).show();
 
-                    // selects blacklist from DB & caches blacklist
-                    BlacklistDao dao = new BlacklistDao(MainActivity.this);
+                    // selects blacklist from DB & caches blacklist when starting the blacklist service
                     CallReceiver.cachedBlacklist = dao.getAllBlacklist();
 
                 } else {
                     stopService(new Intent(MainActivity.this, BlacklistService.class));
+                    CallReceiver.cachedBlacklist = null; // clear the cached blacklist
                     Toast.makeText(MainActivity.this, "Blacklist service has been disabled.", Toast.LENGTH_LONG).show();
                 }
             }
         });
 
-
-        findViewById(R.id.enableCallTransfer).setOnClickListener(new OnClickListener() {
+        // Adds a phone number into black list
+        findViewById(R.id.btnAdd).setOnClickListener(new OnClickListener() {
             public void onClick(View view) {
 //                //setting call forwarding
 //                Message message = mHandler.obtainMessage();
 //                message.what = OP_REGISTER;
 //                mHandler.dispatchMessage(message);
-                // todo: to persist a phone number to db and refresh blacklist cache (CallReceiver will read cached blacklist)
 
-                Log.d("MainActivity", "Blocked phone number: " + CallReceiver.cachedBlacklist);
+                // Gets text from EditText
+                EditText etPhone = (EditText)findViewById(R.id.etPhone);
+                String phoneNumber = etPhone.getText().toString();
+
+                // Prepares blacklist content.
+                Blacklist blacklist = new Blacklist();
+                blacklist.setPhone(phoneNumber);
+                blacklist.setComment("Harassing phone call");
+
+                try {
+                    boolean exist = dao.isExist(phoneNumber);
+                    // If the number has not in the blacklist then put it in.
+                    if (!exist) {
+                        dao.add(blacklist);
+                        Log.d("MainActivity", "Blocked phone number: " + phoneNumber);
+                        Toast.makeText(MainActivity.this, String.format("The " +
+                                "number %s has been added into blacklist, " +
+                                "you will not receive the phone call.",
+                                phoneNumber), Toast.LENGTH_LONG).show();
+
+                        // Refreshes cached blacklist
+                        CallReceiver.cachedBlacklist = dao.getAllBlacklist();
+                    } else {
+                        Toast.makeText(MainActivity.this, "This number has " +
+                                "been in the blacklist.", Toast.LENGTH_LONG).show();
+                    }
+                } catch(Exception e) {
+                    Log.w(this.getClass().getName(), e);
+                    Toast.makeText(MainActivity.this, e.getLocalizedMessage(),
+                            Toast.LENGTH_LONG).show();
+                }
             }
         });
 
-        findViewById(R.id.disableCallTransfer).setOnClickListener(new OnClickListener() {
+        // Removes a phone number from blacklist.
+        findViewById(R.id.btnRemove).setOnClickListener(new OnClickListener() {
             public void onClick(View view) {
 //                //cancel call forwarding
 //                Message message = mHandler.obtainMessage();
 //                message.what = OP_CANCEL;
 //                mHandler.dispatchMessage(message);
-                // todo: to remove a phone number from dao and refresh blacklist cache
-                CallReceiver.cachedBlacklist = null;
-                Log.d("MainActivity", "Unblocked phone number: " + CallReceiver.cachedBlacklist);
+
+                // Gets text from EditText
+                EditText etPhone = (EditText)findViewById(R.id.etPhone);
+                String phoneNumber = etPhone.getText().toString();
+
+
+                try {
+                    boolean exist = dao.isExist(phoneNumber);
+                    // if the phone number exists then remove it.
+                    if (exist) {
+                        dao.remove(phoneNumber);
+                        String msgRm = String.format("The number %s has been" +
+                                " removed from the blacklist", phoneNumber);
+                        Log.d(this.getClass().getName(), msgRm);
+                        Toast.makeText(MainActivity.this, msgRm, Toast.LENGTH_LONG).show();
+
+                        // Refreshes cached blacklist
+                        CallReceiver.cachedBlacklist = dao.getAllBlacklist();
+                    } else {
+                        Toast.makeText(MainActivity.this, "This number has not" +
+                                " in the blacklist yet.", Toast.LENGTH_LONG).show();
+                    }
+                } catch (Exception e) {
+                    Log.w(this.getClass().getName(), e);
+                    Toast.makeText(MainActivity.this, e.getLocalizedMessage(),
+                            Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
