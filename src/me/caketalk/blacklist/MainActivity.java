@@ -6,9 +6,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -35,15 +38,39 @@ public class MainActivity extends Activity {
     //占线时转移
     private final static String DISABLE_SERVICE = "tel:##67#";
 
+    private EditText etPhoneNumber;
+    private Button btnAdd;
+    private Button btnRemove;
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
         final BlacklistDao dao = new BlacklistDao(this);
 
-        CheckBox checkBox = (CheckBox) findViewById(R.id.chkEnableBlacklist);
+
+        etPhoneNumber = (EditText) findViewById(R.id.etPhone);
+        btnAdd = (Button) findViewById(R.id.btnAdd);
+        btnRemove = (Button) findViewById(R.id.btnRemove);
+
+        setButtonStatus(!getInputPhoneNumber().equals(""));
+
+        etPhoneNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                setButtonStatus(!getInputPhoneNumber().equals(""));
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
+
 
         // setting radio button status if Blacklist service is running
+        CheckBox checkBox = (CheckBox) findViewById(R.id.chkEnableBlacklist);
         if (ServiceUtil.isServiceRunning(this, BlacklistService.class.getName())) {
             checkBox.setChecked(true);
         }
@@ -66,17 +93,16 @@ public class MainActivity extends Activity {
             }
         });
 
+
         // Adds a phone number into black list
-        findViewById(R.id.btnAdd).setOnClickListener(new OnClickListener() {
+        btnAdd.setOnClickListener(new OnClickListener() {
             public void onClick(View view) {
 //                //setting call forwarding
 //                Message message = mHandler.obtainMessage();
 //                message.what = OP_REGISTER;
 //                mHandler.dispatchMessage(message);
 
-                // Gets text from EditText
-                EditText etPhone = (EditText)findViewById(R.id.etPhone);
-                String phoneNumber = etPhone.getText().toString();
+                String phoneNumber = getInputPhoneNumber();
 
                 // Prepares blacklist content.
                 Blacklist blacklist = new Blacklist();
@@ -97,14 +123,12 @@ public class MainActivity extends Activity {
                         // Refreshes cached blacklist
                         CallReceiver.cachedBlacklist = dao.getAllBlacklist();
 
-                        // Clean the EditText field
-                        etPhone.getEditableText().clear();
-                        etPhone.clearFocus();
+                        clearInputPhoneNumber();
                     } else {
                         Toast.makeText(MainActivity.this, "This number has " +
                                 "been in the blacklist.", Toast.LENGTH_LONG).show();
                     }
-                } catch(Exception e) {
+                } catch (Exception e) {
                     Log.w(this.getClass().getName(), e);
                     Toast.makeText(MainActivity.this, e.getLocalizedMessage(),
                             Toast.LENGTH_LONG).show();
@@ -112,18 +136,16 @@ public class MainActivity extends Activity {
             }
         });
 
+
         // Removes a phone number from blacklist.
-        findViewById(R.id.btnRemove).setOnClickListener(new OnClickListener() {
+        btnRemove.setOnClickListener(new OnClickListener() {
             public void onClick(View view) {
 //                //cancel call forwarding
 //                Message message = mHandler.obtainMessage();
 //                message.what = OP_CANCEL;
 //                mHandler.dispatchMessage(message);
 
-                // Gets text from EditText
-                EditText etPhone = (EditText)findViewById(R.id.etPhone);
-                String phoneNumber = etPhone.getText().toString();
-
+                String phoneNumber = getInputPhoneNumber();
 
                 try {
                     boolean exist = dao.isExist(phoneNumber);
@@ -138,9 +160,7 @@ public class MainActivity extends Activity {
                         // Refreshes cached blacklist
                         CallReceiver.cachedBlacklist = dao.getAllBlacklist();
 
-                        // Clean the EditText field
-                        etPhone.getEditableText().clear();
-                        etPhone.clearFocus();
+                        clearInputPhoneNumber();
                     } else {
                         Toast.makeText(MainActivity.this, "This number has not" +
                                 " in the blacklist yet.", Toast.LENGTH_LONG).show();
@@ -152,6 +172,20 @@ public class MainActivity extends Activity {
                 }
             }
         });
+    }
+
+    private void setButtonStatus(boolean enabled) {
+        btnAdd.setEnabled(enabled);
+        btnRemove.setEnabled(enabled);
+    }
+
+    private void clearInputPhoneNumber() {
+        etPhoneNumber.getEditableText().clear();
+        etPhoneNumber.clearFocus();
+    }
+
+    private String getInputPhoneNumber() {
+        return etPhoneNumber.getText().toString();
     }
 
     private Handler mHandler = new Handler() {
