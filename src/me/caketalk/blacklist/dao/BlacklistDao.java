@@ -44,6 +44,7 @@ public class BlacklistDao extends BaseDao {
             } while(cursor.moveToNext());
         }
         cursor.close();
+        db.close();
 
         return blacklist;
     }
@@ -54,6 +55,7 @@ public class BlacklistDao extends BaseDao {
         Cursor cursor = db.rawQuery("select 1 from " + T_BLACKLIST + " where phone=?", new String[]{phone});
         boolean exists = cursor.getCount() > 0;
         cursor.close();
+        db.close();
 
         return exists;
     }
