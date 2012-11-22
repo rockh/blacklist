@@ -9,6 +9,7 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import com.android.internal.telephony.ITelephony;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -17,7 +18,7 @@ import java.util.List;
  */
 public class CallReceiver extends BroadcastReceiver {
 
-    public static List<String> cachedBlacklist;
+    public static List<String> cachedBlacklist = Collections.emptyList();
 
     private ITelephony telephony;
 

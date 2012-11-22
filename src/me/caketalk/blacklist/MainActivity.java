@@ -87,7 +87,8 @@ public class MainActivity extends Activity {
 
                 } else {
                     stopService(new Intent(MainActivity.this, BlacklistService.class));
-                    CallReceiver.cachedBlacklist = null; // clear the cached blacklist
+                    CallReceiver.cachedBlacklist.clear(); // clear the cached blacklist
+                    Log.d(this.getClass().getName(), "Cached Blacklist has been cleared " + CallReceiver.cachedBlacklist);
                     Toast.makeText(MainActivity.this, "Blacklist service has been disabled.", Toast.LENGTH_LONG).show();
                 }
             }
@@ -121,6 +122,7 @@ public class MainActivity extends Activity {
                                 phoneNumber), Toast.LENGTH_LONG).show();
 
                         // Refreshes cached blacklist
+                        CallReceiver.cachedBlacklist.clear();
                         CallReceiver.cachedBlacklist = dao.getAllBlacklist();
 
                         clearInputPhoneNumber();
@@ -158,6 +160,7 @@ public class MainActivity extends Activity {
                         Toast.makeText(MainActivity.this, msgRm, Toast.LENGTH_LONG).show();
 
                         // Refreshes cached blacklist
+                        CallReceiver.cachedBlacklist.clear();
                         CallReceiver.cachedBlacklist = dao.getAllBlacklist();
 
                         clearInputPhoneNumber();
