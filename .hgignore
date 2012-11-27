@@ -1,6 +1,10 @@
 # use glob syntax
 syntax: glob
 
+*.iws
+*.ipr
+*.iml
+*.apk
 *.bak
 *.swp
 Thumbs.db

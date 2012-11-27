@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
+import com.google.ads.AdRequest;
+import com.google.ads.AdView;
 import me.caketalk.R;
 import me.caketalk.blacklist.dao.BlacklistDao;
 import me.caketalk.blacklist.model.Blacklist;
@@ -175,6 +177,10 @@ public class MainActivity extends Activity {
                 }
             }
         });
+
+        // Look up the AdView as a resource and load a request.
+        AdView adView = (AdView)this.findViewById(R.id.adview);
+        adView.loadAd(new AdRequest());
     }
 
     private void setButtonStatus(boolean enabled) {

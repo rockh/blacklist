@@ -31,7 +31,7 @@ public class CallReceiver extends BroadcastReceiver {
         String action = intent.getAction();
         Log.d("CallReceiver", "Phone Action:" + action);
 
-        // todo: checks cached blacklist
+        // checks cached blacklist
         Log.d("CallReceiver", "Current blocked phone number is: " + cachedBlacklist);
 
         String incomingNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
