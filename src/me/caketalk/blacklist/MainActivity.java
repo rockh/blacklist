@@ -9,6 +9,9 @@ import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -181,6 +184,19 @@ public class MainActivity extends Activity {
         // Look up the AdView as a resource and load a request.
         AdView adView = (AdView)this.findViewById(R.id.adview);
         adView.loadAd(new AdRequest());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        //respond to menu item selection
+        return false;
     }
 
     private void setButtonStatus(boolean enabled) {
