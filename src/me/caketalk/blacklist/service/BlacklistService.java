@@ -37,7 +37,7 @@ public class BlacklistService extends Service {
             Method m = TelephonyManager.class.getDeclaredMethod("getITelephony");
             m.setAccessible(true);
             ITelephony telephony = (ITelephony) m.invoke(telephonyManager);
-            callReceiver = new CallReceiver(telephony);
+            callReceiver = new CallReceiver(telephony, this);
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction("android.intent.action.PHONE_STATE");
             intentFilter.addAction("android.provider.Telephony.SMS_RECEIVED");

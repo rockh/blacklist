@@ -2,10 +2,7 @@ package me.caketalk.blacklist;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -26,22 +23,11 @@ import me.caketalk.blacklist.model.Blacklist;
 import me.caketalk.blacklist.service.BlacklistService;
 import me.caketalk.blacklist.util.ServiceUtil;
 
-import java.util.List;
-
 /**
  * @author Rock Huang
- * @version 0.1
+ * @version 0.2
  */
 public class MainActivity extends Activity {
-
-    private final static int OP_REGISTER = 100;
-    private final static int OP_CANCEL = 200;
-
-    //占线时转移，这里13800000000是空号，所以会提示所拨的号码为空号
-    private final static String ENABLE_SERVICE = "tel:**67#13800000000#";
-
-    //占线时转移
-    private final static String DISABLE_SERVICE = "tel:##67#";
 
     private EditText etPhoneNumber;
     private Button btnAdd;
@@ -88,12 +74,12 @@ public class MainActivity extends Activity {
                     Toast.makeText(MainActivity.this, "Blacklist service has been enabled.", Toast.LENGTH_LONG).show();
 
                     // selects blacklist from DB & caches blacklist when starting the blacklist service
-                    CallReceiver.cachedBlacklist = dao.getAllBlacklist();
+                    //CallReceiver.cachedBlacklist = dao.getAllBlacklist();
 
                 } else {
                     stopService(new Intent(MainActivity.this, BlacklistService.class));
-                    CallReceiver.cachedBlacklist.clear(); // clear the cached blacklist
-                    Log.d(this.getClass().getName(), "Cached Blacklist has been cleared " + CallReceiver.cachedBlacklist);
+                    //CallReceiver.cachedBlacklist.clear(); // clear the cached blacklist
+                    //Log.d(this.getClass().getName(), "Cached Blacklist has been cleared " + CallReceiver.cachedBlacklist);
                     Toast.makeText(MainActivity.this, "Blacklist service has been disabled.", Toast.LENGTH_LONG).show();
                 }
             }
@@ -127,8 +113,8 @@ public class MainActivity extends Activity {
                                 phoneNumber), Toast.LENGTH_LONG).show();
 
                         // Refreshes cached blacklist
-                        CallReceiver.cachedBlacklist.clear();
-                        CallReceiver.cachedBlacklist = dao.getAllBlacklist();
+                        //CallReceiver.cachedBlacklist.clear();
+                        //CallReceiver.cachedBlacklist = dao.getAllBlacklist();
 
                         clearInputPhoneNumber();
                     } else {
@@ -165,8 +151,8 @@ public class MainActivity extends Activity {
                         Toast.makeText(MainActivity.this, msgRm, Toast.LENGTH_LONG).show();
 
                         // Refreshes cached blacklist
-                        CallReceiver.cachedBlacklist.clear();
-                        CallReceiver.cachedBlacklist = dao.getAllBlacklist();
+                        //CallReceiver.cachedBlacklist.clear();
+                        //CallReceiver.cachedBlacklist = dao.getAllBlacklist();
 
                         clearInputPhoneNumber();
                     } else {
@@ -213,24 +199,5 @@ public class MainActivity extends Activity {
         return etPhoneNumber.getText().toString();
     }
 
-    private Handler mHandler = new Handler() {
-        public void handleMessage(Message response) {
-            int what = response.what;
-            switch (what) {
-                case OP_REGISTER: {
-                    Intent i = new Intent(Intent.ACTION_CALL);
-                    i.setData(Uri.parse(ENABLE_SERVICE));
-                    startActivity(i);
-                    break;
-                }
-                case OP_CANCEL: {
-                    Intent i = new Intent(Intent.ACTION_CALL);
-                    i.setData(Uri.parse(DISABLE_SERVICE));
-                    startActivity(i);
-                    break;
-                }
-            }
-        }
-    };
 
 }
