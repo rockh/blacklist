@@ -1,20 +1,17 @@
 package me.caketalk.blacklist;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.*;
 import com.google.ads.AdRequest;
 import com.google.ads.AdView;
 import me.caketalk.R;
@@ -37,8 +34,24 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        final BlacklistDao dao = new BlacklistDao(this);
+        // Tab navigation bar
 
+        TabHost tabs = (TabHost) findViewById(R.id.tabhost);
+        tabs.setup();
+
+        TabHost.TabSpec spec1 = tabs.newTabSpec("tab1");
+        spec1.setContent(R.id.tabBlacklist);
+        spec1.setIndicator("Blacklist");
+        tabs.addTab(spec1);
+
+        TabHost.TabSpec spec2 = tabs.newTabSpec("tab2");
+        spec2.setContent(R.id.tabSetting);
+        spec2.setIndicator("Setting");
+        tabs.addTab(spec2);
+
+
+
+        final BlacklistDao dao = new BlacklistDao(this);
 
         etPhoneNumber = (EditText) findViewById(R.id.etPhone);
         btnAdd = (Button) findViewById(R.id.btnAdd);
@@ -61,7 +74,7 @@ public class MainActivity extends Activity {
 
 
         // setting radio button status if Blacklist service is running
-        CheckBox checkBox = (CheckBox) findViewById(R.id.chkEnableBlacklist);
+        final CheckBox checkBox = (CheckBox) findViewById(R.id.chkEnableBlacklist);
         if (ServiceUtil.isServiceRunning(this, BlacklistService.class.getName())) {
             checkBox.setChecked(true);
         }
@@ -77,10 +90,27 @@ public class MainActivity extends Activity {
                     //CallReceiver.cachedBlacklist = dao.getAllBlacklist();
 
                 } else {
-                    stopService(new Intent(MainActivity.this, BlacklistService.class));
-                    //CallReceiver.cachedBlacklist.clear(); // clear the cached blacklist
-                    //Log.d(this.getClass().getName(), "Cached Blacklist has been cleared " + CallReceiver.cachedBlacklist);
-                    Toast.makeText(MainActivity.this, "Blacklist service has been disabled.", Toast.LENGTH_LONG).show();
+                    AlertDialog.Builder b = new AlertDialog.Builder(MainActivity.this);
+                    b.setTitle("Warning");
+                    b.setMessage("The Blacklist service will be disabled, are you sure?");
+                    b.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            stopService(new Intent(MainActivity.this, BlacklistService.class));
+                            Toast.makeText(MainActivity.this, "Blacklist service has been disabled.", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    b.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            checkBox.setChecked(true);
+                        }
+                    });
+                    b.show();
+
+
+
+
                 }
             }
         });
@@ -170,13 +200,6 @@ public class MainActivity extends Activity {
         // Look up the AdView as a resource and load a request.
         AdView adView = (AdView)this.findViewById(R.id.adview);
         adView.loadAd(new AdRequest());
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
-        return true;
     }
 
     @Override
