@@ -2,7 +2,7 @@
 
 <TabHost xmlns:android="http://schemas.android.com/apk/res/android"
          xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
-         android:id="@+id/tabhost" android:layout_width="fill_parent"
+         android:id="@android:id/tabhost" android:layout_width="fill_parent"
          android:layout_height="fill_parent"
          android:orientation="vertical">
 
@@ -13,35 +13,12 @@
                    android:layout_alignParentTop="true"/>
 
         <FrameLayout android:id="@android:id/tabcontent" android:layout_width="fill_parent"
-                     android:layout_height="wrap_content" android:layout_marginTop="60dp">
+                     android:layout_height="wrap_content" android:layout_below="@android:id/tabs" />
 
-            <LinearLayout android:id="@+id/tabBlacklist" android:orientation="vertical"
-                          android:layout_width="fill_parent" android:layout_height="fill_parent">
-                <!--<TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Blacklist" />-->
-            </LinearLayout>
 
-            <LinearLayout android:id="@+id/tabSetting" android:orientation="vertical" android:layout_width="fill_parent"
-                          android:layout_height="fill_parent">
 
-                <CheckBox android:id="@+id/chkEnableBlacklist"
-                          android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:text="@string/chk_enable"/>
-                <EditText android:id="@+id/etPhone" android:layout_width="fill_parent"
-                          android:layout_height="wrap_content" android:hint="@string/et_phone"
-                          android:numeric="integer" android:layout_marginTop="30dip"/>
-                <Button android:id="@+id/btnAdd"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/btn_add"/>
-                <Button android:id="@+id/btnRemove"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/btn_remove"/>
 
-            </LinearLayout>
 
-        </FrameLayout>
 
 
         <com.google.ads.AdView

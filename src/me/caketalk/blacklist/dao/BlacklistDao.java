@@ -8,13 +8,18 @@ import android.util.Log;
 import me.caketalk.blacklist.model.Blacklist;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Rock Huang
  * @version 0.1
  */
 public class BlacklistDao extends BaseDao {
+
+    private static final String TAG_ID = "_id";
+    private static final String TAG_PHONE = "phone";
 
     public BlacklistDao(Context context) {
         super(context);
@@ -31,16 +36,23 @@ public class BlacklistDao extends BaseDao {
         return delete(T_BLACKLIST, "phone=?", phone);
     }
 
-    public List<String> getAllBlacklist() {
-        String cmd = "SELECT DISTINCT phone FROM " + T_BLACKLIST;
+    public int remove(int id) {
+        return delete(T_BLACKLIST, "_id=" + id);
+    }
+
+    public List<Map<String, String>> getAllBlacklist() {
+        String cmd = "SELECT DISTINCT _id, phone FROM " + T_BLACKLIST;
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(cmd, null);
 
-        List<String> blacklist = new ArrayList<String>(cursor.getCount());
+        List<Map<String, String>> blacklist = new ArrayList<Map<String, String>>(cursor.getCount());
         if (cursor.moveToFirst()) {
             do {
-                blacklist.add(cursor.getString(0));
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put(TAG_ID, cursor.getString(0));
+                map.put(TAG_PHONE, cursor.getString(1));
+                blacklist.add(map);
             } while(cursor.moveToNext());
         }
         cursor.close();
