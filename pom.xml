@@ -28,6 +28,19 @@
         	<version>6.2.1</version>
         </dependency>
 
+        <!-- AndroidAnnotations -->
+        <dependency>
+            <groupId>com.googlecode.androidannotations</groupId>
+            <artifactId>androidannotations</artifactId>
+            <version>2.7.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.androidannotations</groupId>
+            <artifactId>androidannotations-api</artifactId>
+            <version>2.7.1</version>
+        </dependency>
+
         <!-- Dependency for testing -->
         <dependency>
             <groupId>com.pivotallabs</groupId>

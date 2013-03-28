@@ -10,14 +10,12 @@ import android.view.View.OnCreateContextMenuListener;
 import android.view.View;
 import android.widget.*;
 import android.widget.AdapterView.AdapterContextMenuInfo;
-import me.caketalk.R;
 import me.caketalk.blacklist.dao.BlacklistDao;
 import java.util.List;
 import java.util.Map;
 
 /**
- * @author Rock Huang
- * @version 0.1 26/02/13 02:05
+ * @author Rock created at 02:05 26/02/13
  */
 public class BlacklistActivity extends ListActivity {
 

@@ -6,18 +6,22 @@ import android.os.Bundle;
 import android.widget.*;
 import com.google.ads.AdRequest;
 import com.google.ads.AdView;
-import me.caketalk.R;
+import com.googlecode.androidannotations.annotations.*;
 
 /**
  * @author Rock Huang
  * @version 0.2
  */
+@NoTitle
+@Fullscreen
+@EActivity(R.layout.main)
 public class MainActivity extends TabActivity {
 
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+    @ViewById
+    AdView adView;
 
+    @AfterViews
+    void initTab() {
         TabHost tabHost = getTabHost();
 
         TabHost.TabSpec spec1 = tabHost.newTabSpec("tab1");
@@ -29,10 +33,15 @@ public class MainActivity extends TabActivity {
         spec2.setIndicator("Blacklist");
         spec2.setContent(new Intent(this, BlacklistActivity.class));
         tabHost.addTab(spec2);
+    }
 
-        // Look up the AdView as a resource and load a request.
-        AdView adView = (AdView)this.findViewById(R.id.adview);
+    @AfterViews
+    void requestAd() {
         adView.loadAd(new AdRequest());
+    }
+
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
 }

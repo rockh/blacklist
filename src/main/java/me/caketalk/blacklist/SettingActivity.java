@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
-import me.caketalk.R;
 import me.caketalk.blacklist.dao.BlacklistDao;
 import me.caketalk.blacklist.model.Blacklist;
 import me.caketalk.blacklist.service.BlacklistService;
