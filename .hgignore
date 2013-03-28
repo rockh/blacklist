@@ -8,6 +8,8 @@ syntax: glob
 *.bak
 *.swp
 Thumbs.db
+.idea/
+target/
 out/
 gen/
 bin/
