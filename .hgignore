@@ -9,6 +9,7 @@ syntax: glob
 *.swp
 Thumbs.db
 .idea/
+gen-external-apklibs/
 target/
 out/
 gen/

@@ -1,6 +1,5 @@
 package me.caketalk.blacklist;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,22 +7,27 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import me.caketalk.blacklist.dao.BlacklistDao;
 import me.caketalk.blacklist.model.Blacklist;
 import me.caketalk.blacklist.service.BlacklistService;
 import me.caketalk.blacklist.util.ServiceUtil;
 
 /**
- * @author Rock Huang
- * @version 0.1 26/02/13 03:32
+ * @author Rock Created at 03:32 26/02/13
+ * @version 0.2 31/03/13
  */
-public class SettingActivity extends Activity {
+public class SettingsActivity extends SherlockActivity {
+
+    public final static int THEME = R.style.Theme_Sherlock;
 
     private EditText etPhoneNumber;
     private Button btnAdd;
@@ -31,6 +35,9 @@ public class SettingActivity extends Activity {
     
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(THEME);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.setting);
 
         final BlacklistDao dao = new BlacklistDao(this);
@@ -65,17 +72,17 @@ public class SettingActivity extends Activity {
             @Override
             public void onClick(View view) {
                 if (((CheckBox) view).isChecked()) {
-                    startService(new Intent(SettingActivity.this, BlacklistService.class));
-                    Toast.makeText(SettingActivity.this, "Blacklist service has been enabled.", Toast.LENGTH_LONG).show();
+                    startService(new Intent(SettingsActivity.this, BlacklistService.class));
+                    Toast.makeText(SettingsActivity.this, "Blacklist service has been enabled.", Toast.LENGTH_LONG).show();
                 } else {
-                    AlertDialog.Builder b = new AlertDialog.Builder(SettingActivity.this);
+                    AlertDialog.Builder b = new AlertDialog.Builder(SettingsActivity.this);
                     b.setTitle("Warning");
                     b.setMessage("The Blacklist service will be disabled, are you sure?");
                     b.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            stopService(new Intent(SettingActivity.this, BlacklistService.class));
-                            Toast.makeText(SettingActivity.this, "Blacklist service has been disabled.", Toast.LENGTH_LONG).show();
+                            stopService(new Intent(SettingsActivity.this, BlacklistService.class));
+                            Toast.makeText(SettingsActivity.this, "Blacklist service has been disabled.", Toast.LENGTH_LONG).show();
                         }
                     });
                     b.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -111,7 +118,7 @@ public class SettingActivity extends Activity {
                     if (!exist) {
                         dao.add(blacklist);
                         Log.d(this.getClass().getName(), "Blocked phone number: " + phoneNumber);
-                        Toast.makeText(SettingActivity.this, String.format("The " +
+                        Toast.makeText(SettingsActivity.this, String.format("The " +
                                 "number %s has been added into blacklist, " +
                                 "you will not receive the phone call.",
                                 phoneNumber), Toast.LENGTH_LONG).show();
@@ -121,12 +128,12 @@ public class SettingActivity extends Activity {
 
                         clearInputPhoneNumber();
                     } else {
-                        Toast.makeText(SettingActivity.this, "This number has " +
+                        Toast.makeText(SettingsActivity.this, "This number has " +
                                 "been in the blacklist.", Toast.LENGTH_LONG).show();
                     }
                 } catch (Exception e) {
                     Log.w(this.getClass().getName(), e);
-                    Toast.makeText(SettingActivity.this, e.getLocalizedMessage(),
+                    Toast.makeText(SettingsActivity.this, e.getLocalizedMessage(),
                             Toast.LENGTH_LONG).show();
                 }
             }
@@ -151,19 +158,19 @@ public class SettingActivity extends Activity {
                         String msgRm = String.format("The number %s has been" +
                                 " removed from the blacklist", phoneNumber);
                         Log.d(this.getClass().getName(), msgRm);
-                        Toast.makeText(SettingActivity.this, msgRm, Toast.LENGTH_LONG).show();
+                        Toast.makeText(SettingsActivity.this, msgRm, Toast.LENGTH_LONG).show();
 
                         // Notify BlacklistActivity that ListView has been changed
                         BlacklistActivity.changed = true;
 
                         clearInputPhoneNumber();
                     } else {
-                        Toast.makeText(SettingActivity.this, "This number has not" +
+                        Toast.makeText(SettingsActivity.this, "This number has not" +
                                 " in the blacklist yet.", Toast.LENGTH_LONG).show();
                     }
                 } catch (Exception e) {
                     Log.w(this.getClass().getName(), e);
-                    Toast.makeText(SettingActivity.this, e.getLocalizedMessage(),
+                    Toast.makeText(SettingsActivity.this, e.getLocalizedMessage(),
                             Toast.LENGTH_LONG).show();
                 }
             }
@@ -173,9 +180,22 @@ public class SettingActivity extends Activity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        //respond to menu item selection
-        return false;
+        switch(item.getItemId()) {
+            case android.R.id.home:
+                // app icon in action bar clicked; go home
+                Intent intent = new Intent(this, BlacklistActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void setButtonStatus(boolean enabled) {

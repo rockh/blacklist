@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/add" android:title="@string/menuitem_add"
+          android:showAsAction="always" android:icon="@android:drawable/ic_menu_add" />
+
+    <item android:id="@+id/more" android:title="@string/menuitem_more"
+          android:showAsAction="always"
+          android:icon="@drawable/abs__ic_menu_moreoverflow_normal_holo_dark" >
+
+        <menu>
+
+            <item android:id="@+id/settings" android:title="Settings" android:showAsAction="ifRoom" android:icon="@android:drawable/ic_menu_preferences" />
+
+            <!--<item android:id="@+id/help" android:title="Help" android:showAsAction="ifRoom" android:icon="@android:drawable/ic_menu_help"/>-->
+
+            <item android:id="@+id/About" android:title="About" android:showAsAction="ifRoom" android:icon="@android:drawable/ic_menu_info_details"/>
+
+        </menu>
+
+    </item>
+
+</menu>
