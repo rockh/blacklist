@@ -43,6 +43,10 @@ public class BlacklistDao extends BaseDao {
         return delete(T_BLACKLIST, "_id=" + id);
     }
 
+    public int update(ContentValues v, String phone) {
+        return update(T_BLACKLIST, v, "phone=" + phone);
+    }
+
     public List<Map<String, Object>> getAllBlacklist() {
         String cmd = String.format("SELECT DISTINCT %s, %s, %s FROM %s", F_ID, F_PHONE, F_BLOCK_OPT_ID, T_BLACKLIST);
 

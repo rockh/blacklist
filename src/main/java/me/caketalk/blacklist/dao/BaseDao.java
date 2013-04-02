@@ -61,4 +61,11 @@ public abstract class BaseDao extends SQLiteOpenHelper {
         db.close();
         return affected;
     }
+
+    protected int update(String tableName, ContentValues values, String whereClause, String ... whereArgs) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int affected = db.update(tableName, values, whereClause, whereArgs);
+        db.close();
+        return affected;
+    }
 }

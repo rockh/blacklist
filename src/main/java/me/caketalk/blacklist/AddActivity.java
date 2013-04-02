@@ -1,5 +1,6 @@
 package me.caketalk.blacklist;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -20,6 +21,7 @@ import java.util.HashMap;
  */
 public class AddActivity extends SherlockActivity {
 
+    private ActionBar actionBar;
     private EditText etPhoneNumber;
     private Button btnAdd;
     private Button btnRemove;
@@ -29,7 +31,7 @@ public class AddActivity extends SherlockActivity {
         super.onCreate(savedInstanceState);
 
         setTheme(SettingsActivity.THEME);
-        ActionBar actionBar = getSupportActionBar();
+        actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         setContentView(R.layout.add);
@@ -92,7 +94,7 @@ public class AddActivity extends SherlockActivity {
                     // If the number has not in the blacklist then put it in.
                     if (!exist) {
                         dao.add(blacklist);
-                        Log.d(this.getClass().getName(), "Blocked phone number: " + phoneNumber);
+                        Log.d(this.getClass().getName(), "Added new phone number to Blacklist: " + phoneNumber);
                         Toast.makeText(AddActivity.this, String.format("The " +
                                 "number %s has been added into blacklist, " +
                                 "you will not receive the phone call.",
@@ -171,11 +173,46 @@ public class AddActivity extends SherlockActivity {
         Bundle bundle = this.getIntent().getExtras();
 
         if (bundle != null) {
-            HashMap dataItem = (HashMap) bundle.getSerializable("dataItem");
-            String phoneNumber = dataItem.get("phone").toString();
+            final HashMap dataItem = (HashMap) bundle.getSerializable("dataItem");
+            final String phoneNumber = dataItem.get("phone").toString();
             etPhoneNumber.setText(phoneNumber);
 
-            // Sets drop-down list according to selected value
+            actionBar.setTitle("Edit number");
+            btnAdd.setText("Save");
+            btnAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ContentValues v = new ContentValues();
+
+                    String updatedPhone = etPhoneNumber.getText().toString();
+                    if (!updatedPhone.equals(phoneNumber)) {
+                        v.put("phone", updatedPhone);
+                    }
+
+                    int oldBlockOptId = (Integer) dataItem.get("block_opt_id");
+                    int newBlockOptId = (int) spnBlockOptions.getSelectedItemId();
+                    if (oldBlockOptId != newBlockOptId) {
+                        v.put("block_opt_id", newBlockOptId);
+                    }
+
+                    if (v.size() == 0) {
+                        String noChange = "Nothing changed!";
+                        Toast.makeText(AddActivity.this, noChange, Toast.LENGTH_LONG).show();
+                        Log.d(AddActivity.class.getName(), noChange);
+                    } else {
+                        new BlacklistDao(AddActivity.this).update(v, phoneNumber);
+                        String updatedMsg = "Updated an existing number in Blacklist.";
+                        Toast.makeText(AddActivity.this, updatedMsg, Toast.LENGTH_LONG).show();
+                        Log.d(AddActivity.class.getName(), updatedMsg);
+                        BlacklistActivity.changed = true;
+                    }
+                }
+            });
+
+            // Sets drop-down list according to selected item value
+            // NOTE: saved id is 'spnBlockOptions.getSelectedItemId()',
+            // but here the param of 'setSelection(int)' is position id.
+            // They should keep consistent and need to consider this further.
             int blockOptId = (Integer) dataItem.get("block_opt_id");
             spnBlockOptions.setSelection(blockOptId);
         }
