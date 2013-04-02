@@ -9,12 +9,12 @@ import org.junit.runner.RunWith;
  * @author rock created at 20:26 28/03/13
  */
 @RunWith(RobolectricTestRunner.class)
-public class MainActivityTest {
+public class AddActivityTest {
 
     @Test
     public void shouldHaveProperAppName() throws Exception {
-        String appName = new MainActivity().getResources().getString(R.string.app_name);
-        Assert.assertEquals("Blacklist", appName);
+        String appName = new AddActivity().getResources().getString(R.string.lbl_add);
+        Assert.assertEquals("New Number", appName);
     }
 
 }

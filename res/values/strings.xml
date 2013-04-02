@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Blacklist</string>
-    <string name="settings">Settings</string>
+    <string name="lbl_settings">Settings</string>
+    <string name="lbl_add">New Number</string>
+
     <string name="btn_add">Add into Blacklist</string>
     <string name="btn_remove">Remove from Blacklist</string>
     <string name="et_phone">Please input a phone number</string>
