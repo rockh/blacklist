@@ -15,6 +15,8 @@ import com.actionbarsherlock.app.SherlockListActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import me.caketalk.blacklist.dao.BlacklistDao;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -50,8 +52,8 @@ public class BlacklistActivity extends SherlockListActivity {
                 AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
                 String blockedNumber = ((TextView) info.targetView.findViewById(R.id.blockedNumber)).getText().toString();
                 menu.setHeaderTitle(blockedNumber);
-//                menu.add(0, 0, 0, "Edit Phone Number");
-                menu.add(0, 1, 0, "Remove Phone Number");
+                menu.add(0, 0, 0, "Edit Phone Number");
+                menu.add(0, 1, 1, "Remove Phone Number");
             }
         });
 
@@ -74,10 +76,15 @@ public class BlacklistActivity extends SherlockListActivity {
             case R.id.abs__home:
                 finish();
                 return true;
+            case R.id.add :
+                Intent intentAdd = new Intent(BlacklistActivity.this, AddActivity.class);
+                intentAdd.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intentAdd);
+                return true;
             case R.id.settings:
-                Intent intent = new Intent(BlacklistActivity.this, SettingsActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                Intent intentSettings = new Intent(BlacklistActivity.this, SettingsActivity.class);
+                intentSettings.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intentSettings);
                 return true;
             case R.id.About:
                 Log.d(this.getLocalClassName(), "Clicked 'About' menu item.");
@@ -91,19 +98,27 @@ public class BlacklistActivity extends SherlockListActivity {
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
         int index = (int) info.id; // info.id corresponding with _id value in database
-        String _id = ((Map) adapter.getItem(index)).get("_id").toString();
+        //String _id = ((Map) adapter.getItem(index)).get("_id").toString();
+        HashMap dataItem = (HashMap) adapter.getItem(index);
+        String id = dataItem.get("_id").toString();
 
 
         switch (item.getItemId()) {
             case 0:  // Edit
-                Log.d(TAG, String.format("Clicking Edit, Index => %s, _id => %s", index, _id));
+                Log.d(TAG, String.format("Clicking Edit, Index => %s, _id => %s", index, id));
+                Intent intentAdd = new Intent(BlacklistActivity.this, AddActivity.class);
+                Bundle extras = new Bundle();
+                extras.putSerializable("dataItem", dataItem);
+                intentAdd.putExtras(extras);
+                intentAdd.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intentAdd);
                 break;
             case 1:  // Remove
-                int affectedRow = dao.remove(Integer.parseInt(_id));
+                int affectedRow = dao.remove(Integer.parseInt(id));
                 if (affectedRow > 0) {
                     blockedList.remove(index);
                     Toast.makeText(BlacklistActivity.this, "The phone number has removed. ", Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, String.format("Clicking Remove Phone Number, Index => %s, _id => %s", index, _id));
+                    Log.d(TAG, String.format("Clicking Remove Phone Number, Index => %s, _id => %s", index, id));
                 } else {
                     Toast.makeText(BlacklistActivity.this, "Nothing has changed.", Toast.LENGTH_SHORT).show();
                 }

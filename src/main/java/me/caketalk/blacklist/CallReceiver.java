@@ -3,6 +3,7 @@ package me.caketalk.blacklist;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.telephony.SmsMessage;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -14,6 +15,8 @@ import me.caketalk.blacklist.dao.BlacklistDao;
  * @version 0.2
  */
 public class CallReceiver extends BroadcastReceiver {
+
+    private final static String TAG = "me.caketalk.blacklist.CallReceiver";
 
     private ITelephony telephony;
     private BlacklistDao dao;
@@ -44,15 +47,29 @@ public class CallReceiver extends BroadcastReceiver {
                 }
             }
         } else if ("android.provider.Telephony.SMS_RECEIVED".equals(action)) { // Intercepts SMS
-//            SmsMessage sms = getMessagesFromIntent(intent)[0];
-//            String number = sms.getOriginatingAddress();
-//            Log.d("SMS Receiving", "Phone Number: " + number);
-//            // number = trimSmsNumber("+86", number);//把国家代码去除掉
-//            if (dao.isExist(incomingNumber) && number.equals(incomingNumber)) {
-//                abortBroadcast();//这句很重要，中断广播后，其他要接收短信的应用都没法收到短信广播了
-//            }
+            //SmsMessage sms = getMessagesFromIntent(intent)[0];
+            SmsMessage sms = getMessage(intent);
+            String smsFrom = sms.getOriginatingAddress();
+            String smsBody = sms.getMessageBody();
+            Log.d(TAG, String.format("SMS Receiving => { From: %s, SMS Body: %s }", smsFrom, smsBody));
+
+            if (dao.isExist(smsFrom)) {
+                abortBroadcast();//这句很重要，中断广播后，其他要接收短信的应用都没法收到短信广播了
+                clearAbortBroadcast();
+            }
+
         }
     }
+
+
+    /********************* Private Methods *********************/
+
+    private SmsMessage getMessage(Intent intent) {
+        Bundle pudsBundle = intent.getExtras();
+        Object[] pdus = (Object[]) pudsBundle.get("pdus");
+        return SmsMessage.createFromPdu((byte[]) pdus[0]);
+    }
+
 
     private SmsMessage[] getMessagesFromIntent(Intent intent) {
         Object[] messages = (Object[]) intent.getSerializableExtra("pdus");

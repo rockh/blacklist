@@ -10,6 +10,7 @@ syntax: glob
 Thumbs.db
 .idea/
 gen-external-apklibs/
+tmp/
 target/
 out/
 gen/
