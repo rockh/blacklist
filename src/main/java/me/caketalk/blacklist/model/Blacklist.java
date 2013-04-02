@@ -10,6 +10,7 @@ public class Blacklist {
 
     private int id;
     private String phone;
+    private int blockOptId;
     private String comment;
     private Date createDate;
 
@@ -27,6 +28,14 @@ public class Blacklist {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public int getBlockOptId() {
+        return blockOptId;
+    }
+
+    public void setBlockOptId(int blockOptId) {
+        this.blockOptId = blockOptId;
     }
 
     public String getComment() {

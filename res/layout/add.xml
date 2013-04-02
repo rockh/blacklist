@@ -10,6 +10,12 @@
               android:layout_height="wrap_content" android:hint="@string/et_phone"
               android:numeric="integer" android:layout_marginTop="30dip"/>
 
+    <Spinner android:id="@+id/spnBlockOptions"
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+             android:entries="@array/block_option_arrays"
+             android:prompt="@string/block_option_prompt"/>
+
     <Button android:id="@+id/btnAdd"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

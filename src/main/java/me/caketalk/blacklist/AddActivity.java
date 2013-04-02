@@ -6,9 +6,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.*;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
@@ -25,6 +23,7 @@ public class AddActivity extends SherlockActivity {
     private EditText etPhoneNumber;
     private Button btnAdd;
     private Button btnRemove;
+    private Spinner spnBlockOptions;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,9 +36,24 @@ public class AddActivity extends SherlockActivity {
 
         final BlacklistDao dao = new BlacklistDao(this);
 
+        // initializing controls
         etPhoneNumber = (EditText) findViewById(R.id.etPhone);
         btnAdd = (Button) findViewById(R.id.btnAdd);
         btnRemove = (Button) findViewById(R.id.btnRemove);
+        spnBlockOptions = (Spinner) findViewById(R.id.spnBlockOptions);
+
+
+        // block options drop-down list
+//        spnBlockOptions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+//                Toast.makeText(parent.getContext(), String.format("Id: %s, Position: %s, Text: %s", id, pos, parent.getItemAtPosition(pos).toString()), Toast.LENGTH_LONG).show();
+//
+//            }
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapterView) {
+//            }
+//        });
 
         setButtonStatus(!getInputPhoneNumber().equals(""));
 
@@ -65,10 +79,12 @@ public class AddActivity extends SherlockActivity {
 //                mHandler.dispatchMessage(message);
 
                 String phoneNumber = getInputPhoneNumber();
+                int blockOptId = (int) spnBlockOptions.getSelectedItemId();
 
                 // Prepares blacklist content.
                 Blacklist blacklist = new Blacklist();
                 blacklist.setPhone(phoneNumber);
+                blacklist.setBlockOptId(blockOptId);
                 blacklist.setComment("Harassing phone call");
 
                 try {
@@ -158,6 +174,10 @@ public class AddActivity extends SherlockActivity {
             HashMap dataItem = (HashMap) bundle.getSerializable("dataItem");
             String phoneNumber = dataItem.get("phone").toString();
             etPhoneNumber.setText(phoneNumber);
+
+            // Sets drop-down list according to selected value
+            int blockOptId = (Integer) dataItem.get("block_opt_id");
+            spnBlockOptions.setSelection(blockOptId);
         }
 
         super.onResume();

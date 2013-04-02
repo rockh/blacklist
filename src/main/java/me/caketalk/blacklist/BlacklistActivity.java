@@ -1,6 +1,5 @@
 package me.caketalk.blacklist;
 
-import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,7 +30,7 @@ public class BlacklistActivity extends SherlockListActivity {
     private String TAG = BlacklistActivity.class.getName();
     private BlacklistDao dao;
     private SimpleAdapter adapter;
-    private List<Map<String, String>> blockedList;
+    private List<Map<String, Object>> blockedList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -8,12 +8,12 @@ import android.util.Log;
 
 /**
  * @author Rock Huang
- * @version 0.2
+ * @version 0.3
  */
 public abstract class BaseDao extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "blacklist.db";
-    private static final int DB_VERSION = 2;
+    private static final int DB_VERSION = 3;
 
     protected static final String T_BLACKLIST = "Blacklist";
 
@@ -24,20 +24,22 @@ public abstract class BaseDao extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + T_BLACKLIST + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR, phone VARCHAR, call_times INTEGER, sms_times INTEGER, comment VARCHAR, created_date DATETIME DEFAULT CURRENT_TIMESTAMP)");
+        db.execSQL("CREATE TABLE " + T_BLACKLIST + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR, phone VARCHAR, block_opt_id INTEGER DEFAULT 0, comment VARCHAR, created_date DATETIME DEFAULT CURRENT_TIMESTAMP)");
         Log.i(this.getClass().getName(), String.format("%s database has been created.", DB_NAME));
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.d(this.getClass().getName(), ">> Database upgrade ... ");
+        String _id = oldVersion > 1 ? "_id" : "id";
+        Log.d(this.getClass().getName(), String.format("oldVersion: %s, newVersion: %s, ID Field: %s", oldVersion, newVersion, _id));
+        Log.d(this.getClass().getName(), ">> Database upgrading ... ");
         db.execSQL("CREATE TEMPORARY TABLE TEMPLIST (id INTEGER, phone VARCHAR, comment VARCHAR, created_date DATETIME);");
         Log.d(this.getClass().getName(), ">> Create temporary table TempList ... ");
-        db.execSQL("INSERT INTO TEMPLIST SELECT id, phone, comment, created_date FROM Blacklist;");
+        db.execSQL("INSERT INTO TEMPLIST SELECT " + _id + ", phone, comment, created_date FROM Blacklist;");
         Log.d(this.getClass().getName(), ">> Copy data from table Blacklist to TempList ...");
         db.execSQL("DROP TABLE Blacklist;");
         Log.d(this.getClass().getName(), ">> Drop table Blacklist ... ");
-        db.execSQL("CREATE TABLE Blacklist (_id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR, phone VARCHAR, call_times INTEGER, sms_times INTEGER, comment VARCHAR, created_date DATETIME DEFAULT CURRENT_TIMESTAMP);");
+        db.execSQL("CREATE TABLE Blacklist (_id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR, phone VARCHAR, block_opt_id INTEGER DEFAULT 0, comment VARCHAR, created_date DATETIME DEFAULT CURRENT_TIMESTAMP);");
         Log.d(this.getClass().getName(), ">> Create Blacklist in new structure ... ");
         db.execSQL("INSERT INTO Blacklist (_id, phone, comment, created_date) SELECT id, phone, comment, created_date FROM TEMPLIST;");
         Log.d(this.getClass().getName(), ">> Copy data from TempList to new Blacklist table ... ");

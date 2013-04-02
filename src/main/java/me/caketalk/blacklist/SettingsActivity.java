@@ -4,20 +4,13 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.Toast;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import me.caketalk.blacklist.dao.BlacklistDao;
-import me.caketalk.blacklist.model.Blacklist;
 import me.caketalk.blacklist.service.BlacklistService;
 import me.caketalk.blacklist.util.ServiceUtil;
 
@@ -70,87 +63,6 @@ public class SettingsActivity extends SherlockActivity {
             }
         });
 
-
-//        // Adds a phone number into black list
-//        btnAdd.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View view) {
-////                //setting call forwarding
-////                Message message = mHandler.obtainMessage();
-////                message.what = OP_REGISTER;
-////                mHandler.dispatchMessage(message);
-//
-//                String phoneNumber = getInputPhoneNumber();
-//
-//                // Prepares blacklist content.
-//                Blacklist blacklist = new Blacklist();
-//                blacklist.setPhone(phoneNumber);
-//                blacklist.setComment("Harassing phone call");
-//
-//                try {
-//                    boolean exist = dao.isExist(phoneNumber);
-//                    // If the number has not in the blacklist then put it in.
-//                    if (!exist) {
-//                        dao.add(blacklist);
-//                        Log.d(this.getClass().getName(), "Blocked phone number: " + phoneNumber);
-//                        Toast.makeText(SettingsActivity.this, String.format("The " +
-//                                "number %s has been added into blacklist, " +
-//                                "you will not receive the phone call.",
-//                                phoneNumber), Toast.LENGTH_LONG).show();
-//
-//                        // Notify BlacklistActivity that ListView has been changed
-//                        BlacklistActivity.changed = true;
-//
-//                        clearInputPhoneNumber();
-//                    } else {
-//                        Toast.makeText(SettingsActivity.this, "This number has " +
-//                                "been in the blacklist.", Toast.LENGTH_LONG).show();
-//                    }
-//                } catch (Exception e) {
-//                    Log.w(this.getClass().getName(), e);
-//                    Toast.makeText(SettingsActivity.this, e.getLocalizedMessage(),
-//                            Toast.LENGTH_LONG).show();
-//                }
-//            }
-//        });
-//
-//
-//        // Removes a phone number from blacklist.
-//        btnRemove.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View view) {
-////                //cancel call forwarding
-////                Message message = mHandler.obtainMessage();
-////                message.what = OP_CANCEL;
-////                mHandler.dispatchMessage(message);
-//
-//                String phoneNumber = getInputPhoneNumber();
-//
-//                try {
-//                    boolean exist = dao.isExist(phoneNumber);
-//                    // if the phone number exists then remove it.
-//                    if (exist) {
-//                        dao.remove(phoneNumber);
-//                        String msgRm = String.format("The number %s has been" +
-//                                " removed from the blacklist", phoneNumber);
-//                        Log.d(this.getClass().getName(), msgRm);
-//                        Toast.makeText(SettingsActivity.this, msgRm, Toast.LENGTH_LONG).show();
-//
-//                        // Notify BlacklistActivity that ListView has been changed
-//                        BlacklistActivity.changed = true;
-//
-//                        clearInputPhoneNumber();
-//                    } else {
-//                        Toast.makeText(SettingsActivity.this, "This number has not" +
-//                                " in the blacklist yet.", Toast.LENGTH_LONG).show();
-//                    }
-//                } catch (Exception e) {
-//                    Log.w(this.getClass().getName(), e);
-//                    Toast.makeText(SettingsActivity.this, e.getLocalizedMessage(),
-//                            Toast.LENGTH_LONG).show();
-//                }
-//            }
-//        });
-
-
     }
 
     @Override
@@ -172,17 +84,4 @@ public class SettingsActivity extends SherlockActivity {
         }
     }
 
-//    private void setButtonStatus(boolean enabled) {
-//        btnAdd.setEnabled(enabled);
-//        btnRemove.setEnabled(enabled);
-//    }
-//
-//    private void clearInputPhoneNumber() {
-//        etPhoneNumber.getEditableText().clear();
-//        etPhoneNumber.clearFocus();
-//    }
-//
-//    private String getInputPhoneNumber() {
-//        return etPhoneNumber.getText().toString();
-//    }
 }

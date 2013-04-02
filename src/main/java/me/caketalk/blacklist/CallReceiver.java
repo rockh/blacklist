@@ -10,9 +10,11 @@ import android.util.Log;
 import com.android.internal.telephony.ITelephony;
 import me.caketalk.blacklist.dao.BlacklistDao;
 
+import java.util.Date;
+
 /**
  * @author Rock Huang
- * @version 0.2
+ * @version 0.3 02/04/2013
  */
 public class CallReceiver extends BroadcastReceiver {
 
@@ -29,19 +31,23 @@ public class CallReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String incomingNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
-        Log.d(CallReceiver.class.getName(), "Incoming Phone Number is: " + incomingNumber);
+        //Log.d(CallReceiver.class.getName(), "Incoming Phone Number is: " + incomingNumber);
 
         String action = intent.getAction();
-        Log.d(CallReceiver.class.getName(), "Intent Action is: " + action);
-
+        //Log.d(CallReceiver.class.getName(), "Intent Action is: " + action);
 
         if ("android.intent.action.PHONE_STATE".equals(action)) { // Intercepts phone call
             String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
-            Log.i(CallReceiver.class.getName(), "Phone State is: " + state);
+            //Log.i(CallReceiver.class.getName(), "Phone State is: " + state);
 
-            if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_RINGING) && dao.isExist(incomingNumber)) {
+            // Non existing number: -1, Both: 0, Calls: 1, SMS: 2
+            int blockOptId = dao.findBlockOptId(incomingNumber);
+            boolean blockCall = blockOptId != -1 && blockOptId != 2;
+
+            if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_RINGING) && blockCall) {
                 try {
                     telephony.endCall();
+                    Log.d(CallReceiver.class.getName(), String.format("# Blocked a phone call => { number:%s, date:%s }", incomingNumber, new Date()));
                 } catch (Exception e) {
                     Log.w(this.getClass().getName(), e);
                 }
@@ -51,11 +57,13 @@ public class CallReceiver extends BroadcastReceiver {
             SmsMessage sms = getMessage(intent);
             String smsFrom = sms.getOriginatingAddress();
             String smsBody = sms.getMessageBody();
-            Log.d(TAG, String.format("SMS Receiving => { From: %s, SMS Body: %s }", smsFrom, smsBody));
+            Log.d(TAG, String.format("Receiving SMS is blocked => { From: %s, SMS Body: %s }", smsFrom, smsBody));
 
-            if (dao.isExist(smsFrom)) {
-                abortBroadcast();//这句很重要，中断广播后，其他要接收短信的应用都没法收到短信广播了
-                clearAbortBroadcast();
+            // Non existing number: -1, Both: 0, Calls: 1, SMS: 2
+            int blockOptId = dao.findBlockOptId(smsFrom);
+            Log.d(CallReceiver.class.getName(), "Block option id => " + blockOptId);
+            if (blockOptId != -1 && blockOptId != 1) {
+                abortBroadcast();
             }
 
         }

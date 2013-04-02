@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Blacklist</string>
     <string name="lbl_settings">Settings</string>
-    <string name="lbl_add">New Number</string>
+    <string name="lbl_add">Add new number</string>
 
     <string name="btn_add">Add into Blacklist</string>
     <string name="btn_remove">Remove from Blacklist</string>
@@ -10,6 +10,14 @@
     <string name="chk_enable">Enable Blacklist Service</string>
 
     <!-- Home Menu -->
-    <string name="menuitem_add">Add a phone number</string>
+    <string name="menuitem_add">Add a new number</string>
     <string name="menuitem_more">More</string>
+
+    <!-- Spinner of blocking options -->
+    <string name="block_option_prompt">Choose a block options</string>
+    <string-array name="block_option_arrays">
+        <item>Block calls and SMS</item>
+        <item>Block only calls</item>
+        <item>Block only SMS</item>
+    </string-array>
 </resources>

@@ -18,17 +18,20 @@ import java.util.Map;
  */
 public class BlacklistDao extends BaseDao {
 
-    private static final String TAG_ID = "_id";
-    private static final String TAG_PHONE = "phone";
+    private static final String F_ID = "_id";
+    private static final String F_PHONE = "phone";
+    private static final String F_BLOCK_OPT_ID = "block_opt_id";
+    private static final String F_COMMENT = "comment";
 
     public BlacklistDao(Context context) {
         super(context);
     }
 
     public boolean add(Blacklist blacklist) {
-        ContentValues v = new ContentValues(2);
-        v.put("phone", blacklist.getPhone());
-        v.put("comment", blacklist.getComment());
+        ContentValues v = new ContentValues(3);
+        v.put(F_PHONE, blacklist.getPhone());
+        v.put(F_BLOCK_OPT_ID, blacklist.getBlockOptId());
+        v.put(F_COMMENT, blacklist.getComment());
         return insert(T_BLACKLIST, v);
     }
 
@@ -40,18 +43,19 @@ public class BlacklistDao extends BaseDao {
         return delete(T_BLACKLIST, "_id=" + id);
     }
 
-    public List<Map<String, String>> getAllBlacklist() {
-        String cmd = "SELECT DISTINCT _id, phone FROM " + T_BLACKLIST;
+    public List<Map<String, Object>> getAllBlacklist() {
+        String cmd = String.format("SELECT DISTINCT %s, %s, %s FROM %s", F_ID, F_PHONE, F_BLOCK_OPT_ID, T_BLACKLIST);
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(cmd, null);
 
-        List<Map<String, String>> blacklist = new ArrayList<Map<String, String>>(cursor.getCount());
+        List<Map<String, Object>> blacklist = new ArrayList<Map<String, Object>>(cursor.getCount());
         if (cursor.moveToFirst()) {
             do {
-                HashMap<String, String> map = new HashMap<String, String>();
-                map.put(TAG_ID, cursor.getString(0));
-                map.put(TAG_PHONE, cursor.getString(1));
+                HashMap<String, Object> map = new HashMap<String, Object>();
+                map.put(F_ID, cursor.getString(0));
+                map.put(F_PHONE, cursor.getString(1));
+                map.put(F_BLOCK_OPT_ID, cursor.getInt(2));
                 blacklist.add(map);
             } while(cursor.moveToNext());
         }
@@ -70,5 +74,17 @@ public class BlacklistDao extends BaseDao {
         db.close();
 
         return exists;
+    }
+
+    public int findBlockOptId(String phone) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String sql = String.format("select %s from %s where phone=?", F_BLOCK_OPT_ID, T_BLACKLIST);
+        Cursor cursor = db.rawQuery(sql, new String[]{phone});
+        int id = cursor.moveToFirst() ? cursor.getInt(0) : -1;
+        cursor.close();
+        db.close();
+
+        return id;
     }
 }
