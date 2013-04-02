@@ -44,7 +44,7 @@ public class BlacklistDao extends BaseDao {
     }
 
     public int update(ContentValues v, String phone) {
-        return update(T_BLACKLIST, v, "phone=" + phone);
+        return update(T_BLACKLIST, v, "phone=?", phone);
     }
 
     public List<Map<String, Object>> getAllBlacklist() {
