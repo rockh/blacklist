@@ -8,7 +8,8 @@
 
     <EditText android:id="@+id/etPhone" android:layout_width="fill_parent"
               android:layout_height="wrap_content" android:hint="@string/et_phone"
-              android:numeric="integer" android:layout_marginTop="30dip"/>
+              android:digits="0123456789+"
+              android:phoneNumber="true" android:layout_marginTop="30dip"/>
 
     <Spinner android:id="@+id/spnBlockOptions"
              android:layout_width="fill_parent"

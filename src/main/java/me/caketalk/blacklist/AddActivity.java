@@ -69,6 +69,7 @@ public class AddActivity extends SherlockActivity {
             }
             @Override
             public void afterTextChanged(Editable editable) {
+                checkPlusPostion();
             }
         });
 
@@ -235,5 +236,13 @@ public class AddActivity extends SherlockActivity {
 
     private String getInputPhoneNumber() {
         return etPhoneNumber.getText().toString();
+    }
+
+    private void checkPlusPostion() {
+        String pn = getInputPhoneNumber();
+        if (pn != null && pn.length() > 0 && !pn.equals("+") && pn.endsWith("+")) {
+            etPhoneNumber.setText(pn.substring(0, pn.length()-1));
+            Toast.makeText(AddActivity.this, "Sorry, you should put '+' at the beginning of phone number!", Toast.LENGTH_LONG).show();
+        }
     }
 }
