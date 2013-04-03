@@ -13,6 +13,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import com.actionbarsherlock.app.SherlockListActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
+import com.google.ads.AdView;
 import me.caketalk.blacklist.dao.BlacklistDao;
 
 import java.util.HashMap;
@@ -58,6 +59,8 @@ public class BlacklistActivity extends SherlockListActivity {
 
 
         // loading Google Admod
+        AdView adView = (AdView) findViewById(R.id.adView);
+
         //adView.loadAd(new AdRequest());
     }
 
@@ -86,7 +89,9 @@ public class BlacklistActivity extends SherlockListActivity {
                 startActivity(intentSettings);
                 return true;
             case R.id.About:
-                Log.d(this.getLocalClassName(), "Clicked 'About' menu item.");
+                Intent intentAbout = new Intent(BlacklistActivity.this, AboutActivity.class);
+                intentAbout.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intentAbout);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -25,6 +25,7 @@
         </activity>
         <activity android:name=".SettingsActivity" android:label="@string/lbl_settings"/>
         <activity android:name=".AddActivity" android:label="@string/lbl_add"/>
+        <activity android:name=".AboutActivity" android:label="@string/lbl_about"/>
 
         <service android:name=".service.BlacklistService"/>
     </application>

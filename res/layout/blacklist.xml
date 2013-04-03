@@ -10,4 +10,15 @@
               android:layout_width="fill_parent"
               android:layout_height="wrap_content"/>
 
+    <com.google.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+        android:id="@+id/adView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        ads:adSize="IAB_LEADERBOARD"
+        android:layout_alignParentBottom="true"
+        android:gravity="bottom"
+        ads:adUnitId="a150b2381e460c1"
+        ads:loadAdOnCreate="true"
+        ads:testDevices="emulator-5554"/>
 </LinearLayout>
