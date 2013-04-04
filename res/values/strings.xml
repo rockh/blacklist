@@ -10,6 +10,8 @@
     <string name="btn_remove">Remove from Blacklist</string>
     <string name="et_phone">Please input a phone number</string>
     <string name="chk_enable">Enable Blacklist Service</string>
+    <string name="tgl_blacklist_enabled">Blacklist service enabled</string>
+    <string name="tgl_blacklist_disabled">Blacklist service disabled</string>
 
     <!-- Home Menu -->
     <string name="menuitem_add">Add a new number</string>
@@ -35,7 +37,8 @@
 
         <h3>Change Log</h3>
         ## Version 0.2 (2013-4-4) <br/>
-        - Blocking unwanted SMS.  <br/>
+        - Using action bar design pattern             <br/>
+        - Blocking unwanted SMS.                      <br/>
         - Option for blocking calls, SMS or both.     <br/>
         - New screen for adding/edting number.        <br/>
         - Fixing bugs.                                <br/><br/>

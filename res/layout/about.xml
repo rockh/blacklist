@@ -5,10 +5,15 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent">
 
-    <TextView
-        android:id="@+id/txtAbout"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dip"/>
+    <ScrollView android:id="@+id/scrollViewAbout"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+        <TextView android:id="@+id/txtAbout"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:padding="10dip"/>
+
+    </ScrollView>
 
 </LinearLayout>

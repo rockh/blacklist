@@ -13,8 +13,8 @@ public class AddActivityTest {
 
     @Test
     public void shouldHaveProperAppName() throws Exception {
-        String appName = new AddActivity().getResources().getString(R.string.lbl_add);
-        Assert.assertEquals("New Number", appName);
+        String appName = new MainActivity().getResources().getString(R.string.app_name);
+        Assert.assertEquals("Blacklist", appName);
     }
 
 }
