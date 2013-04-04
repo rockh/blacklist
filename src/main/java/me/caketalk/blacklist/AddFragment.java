@@ -1,61 +1,46 @@
 package me.caketalk.blacklist;
 
 import android.content.ContentValues;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.*;
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
+import com.actionbarsherlock.app.SherlockFragment;
 import me.caketalk.blacklist.dao.BlacklistDao;
 import me.caketalk.blacklist.model.Blacklist;
 
 import java.util.HashMap;
 
 /**
- * @author Rock created at 07:47 02/04/13
+ * @author Rock created at 18:03 03/04/13
  */
-public class AddActivity extends SherlockActivity {
+public class AddFragment extends SherlockFragment {
 
-    private ActionBar actionBar;
     private EditText etPhoneNumber;
     private Button btnAdd;
     private Button btnRemove;
     private Spinner spnBlockOptions;
 
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        setTheme(SettingsActivity.THEME);
-        actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        View v = inflater.inflate(R.layout.add, container, false);
 
-        setContentView(R.layout.add);
-
-        final BlacklistDao dao = new BlacklistDao(this);
+        final BlacklistDao dao = new BlacklistDao(getActivity());
 
         // initializing controls
-        etPhoneNumber = (EditText) findViewById(R.id.etPhone);
-        btnAdd = (Button) findViewById(R.id.btnAdd);
-        btnRemove = (Button) findViewById(R.id.btnRemove);
-        spnBlockOptions = (Spinner) findViewById(R.id.spnBlockOptions);
+        etPhoneNumber = (EditText) v.findViewById(R.id.etPhone);
+        btnAdd = (Button) v.findViewById(R.id.btnAdd);
+        btnRemove = (Button) v.findViewById(R.id.btnRemove);
+        spnBlockOptions = (Spinner) v.findViewById(R.id.spnBlockOptions);
 
-
-        // block options drop-down list
-//        spnBlockOptions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-//                Toast.makeText(parent.getContext(), String.format("Id: %s, Position: %s, Text: %s", id, pos, parent.getItemAtPosition(pos).toString()), Toast.LENGTH_LONG).show();
-//
-//            }
-//            @Override
-//            public void onNothingSelected(AdapterView<?> adapterView) {
-//            }
-//        });
 
         setButtonStatus(!getInputPhoneNumber().equals(""));
 
@@ -76,10 +61,6 @@ public class AddActivity extends SherlockActivity {
         // Adds a phone number into black list
         btnAdd.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-//                //setting call forwarding
-//                Message message = mHandler.obtainMessage();
-//                message.what = OP_REGISTER;
-//                mHandler.dispatchMessage(message);
 
                 String phoneNumber = getInputPhoneNumber();
                 int blockOptId = (int) spnBlockOptions.getSelectedItemId();
@@ -96,22 +77,22 @@ public class AddActivity extends SherlockActivity {
                     if (!exist) {
                         dao.add(blacklist);
                         Log.d(this.getClass().getName(), "Added new phone number to Blacklist: " + phoneNumber);
-                        Toast.makeText(AddActivity.this, String.format("The " +
+                        Toast.makeText(getActivity(), String.format("The " +
                                 "number %s has been added into blacklist, " +
                                 "you will not receive the phone call.",
                                 phoneNumber), Toast.LENGTH_LONG).show();
 
-                        // Notify BlacklistActivity that ListView has been changed
-                        BlacklistActivity.changed = true;
+                        // Notify BlacklistFragment that ListView has been changed
+                        BlacklistFragment.changed = true;
 
                         clearInputPhoneNumber();
                     } else {
-                        Toast.makeText(AddActivity.this, "This number has " +
+                        Toast.makeText(getActivity(), "This number has " +
                                 "been in the blacklist.", Toast.LENGTH_LONG).show();
                     }
                 } catch (Exception e) {
                     Log.w(this.getClass().getName(), e);
-                    Toast.makeText(AddActivity.this, e.getLocalizedMessage(),
+                    Toast.makeText(getActivity(), e.getLocalizedMessage(),
                             Toast.LENGTH_LONG).show();
                 }
             }
@@ -121,10 +102,6 @@ public class AddActivity extends SherlockActivity {
         // Removes a phone number from blacklist.
         btnRemove.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-//                //cancel call forwarding
-//                Message message = mHandler.obtainMessage();
-//                message.what = OP_CANCEL;
-//                mHandler.dispatchMessage(message);
 
                 String phoneNumber = getInputPhoneNumber();
 
@@ -136,49 +113,36 @@ public class AddActivity extends SherlockActivity {
                         String msgRm = String.format("The number %s has been" +
                                 " removed from the blacklist", phoneNumber);
                         Log.d(this.getClass().getName(), msgRm);
-                        Toast.makeText(AddActivity.this, msgRm, Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), msgRm, Toast.LENGTH_LONG).show();
 
-                        // Notify BlacklistActivity that ListView has been changed
-                        BlacklistActivity.changed = true;
+                        // Notify BlacklistFragment that ListView has been changed
+                        BlacklistFragment.changed = true;
 
                         clearInputPhoneNumber();
                     } else {
-                        Toast.makeText(AddActivity.this, "This number has not" +
+                        Toast.makeText(getActivity(), "This number has not" +
                                 " in the blacklist yet.", Toast.LENGTH_LONG).show();
                     }
                 } catch (Exception e) {
                     Log.w(this.getClass().getName(), e);
-                    Toast.makeText(AddActivity.this, e.getLocalizedMessage(),
+                    Toast.makeText(getActivity(), e.getLocalizedMessage(),
                             Toast.LENGTH_LONG).show();
                 }
             }
         });
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
-            case android.R.id.home:
-                // app icon in action bar clicked; go home
-                Intent intent = new Intent(this, BlacklistActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+        return v;
     }
 
     @Override
     public void onResume() {
-        Bundle bundle = this.getIntent().getExtras();
+        Bundle bundle = getArguments();
 
         if (bundle != null) {
             final HashMap dataItem = (HashMap) bundle.getSerializable("dataItem");
             final String phoneNumber = dataItem.get("phone").toString();
             etPhoneNumber.setText(phoneNumber);
 
-            actionBar.setTitle("Edit number");
             btnAdd.setText("Save");
             btnAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -198,14 +162,14 @@ public class AddActivity extends SherlockActivity {
 
                     if (v.size() == 0) {
                         String noChange = "Nothing changed!";
-                        Toast.makeText(AddActivity.this, noChange, Toast.LENGTH_LONG).show();
-                        Log.d(AddActivity.class.getName(), noChange);
+                        Toast.makeText(getActivity(), noChange, Toast.LENGTH_LONG).show();
+                        Log.d(AddFragment.class.getName(), noChange);
                     } else {
-                        new BlacklistDao(AddActivity.this).update(v, phoneNumber);
+                        new BlacklistDao(getActivity()).update(v, phoneNumber);
                         String updatedMsg = "Updated an existing number in Blacklist.";
-                        Toast.makeText(AddActivity.this, updatedMsg, Toast.LENGTH_LONG).show();
-                        Log.d(AddActivity.class.getName(), updatedMsg);
-                        BlacklistActivity.changed = true;
+                        Toast.makeText(getActivity(), updatedMsg, Toast.LENGTH_LONG).show();
+                        Log.d(AddFragment.class.getName(), updatedMsg);
+                        BlacklistFragment.changed = true;
                     }
                 }
             });
@@ -242,7 +206,8 @@ public class AddActivity extends SherlockActivity {
         String pn = getInputPhoneNumber();
         if (pn != null && pn.length() > 0 && !pn.equals("+") && pn.endsWith("+")) {
             etPhoneNumber.setText(pn.substring(0, pn.length()-1));
-            Toast.makeText(AddActivity.this, "Sorry, you should put '+' at the beginning of phone number!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), "Sorry, you should put '+' at the beginning of phone number!", Toast.LENGTH_LONG).show();
         }
     }
+
 }

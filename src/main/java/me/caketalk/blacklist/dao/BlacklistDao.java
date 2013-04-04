@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 import me.caketalk.blacklist.model.Blacklist;
 
 import java.util.ArrayList;
@@ -81,6 +80,10 @@ public class BlacklistDao extends BaseDao {
     }
 
     public int findBlockOptId(String phone) {
+        if (phone == null || phone.equals("")) {
+            return -1;
+        }
+
         SQLiteDatabase db = this.getReadableDatabase();
 
         String sql = String.format("select %s from %s where phone=?", F_BLOCK_OPT_ID, T_BLACKLIST);

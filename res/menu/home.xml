@@ -13,8 +13,6 @@
 
             <item android:id="@+id/settings" android:title="Settings" android:showAsAction="ifRoom" android:icon="@android:drawable/ic_menu_preferences" />
 
-            <!--<item android:id="@+id/help" android:title="Help" android:showAsAction="ifRoom" android:icon="@android:drawable/ic_menu_help"/>-->
-
             <item android:id="@+id/About" android:title="About" android:showAsAction="ifRoom" android:icon="@android:drawable/ic_menu_info_details"/>
 
         </menu>

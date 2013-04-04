@@ -57,13 +57,13 @@ public class CallReceiver extends BroadcastReceiver {
             SmsMessage sms = getMessage(intent);
             String smsFrom = sms.getOriginatingAddress();
             String smsBody = sms.getMessageBody();
-            Log.d(TAG, String.format("Receiving SMS is blocked => { From: %s, SMS Body: %s }", smsFrom, smsBody));
 
             // Non existing number: -1, Both: 0, Calls: 1, SMS: 2
             int blockOptId = dao.findBlockOptId(smsFrom);
             Log.d(CallReceiver.class.getName(), "Block option id => " + blockOptId);
             if (blockOptId != -1 && blockOptId != 1) {
                 abortBroadcast();
+                Log.d(TAG, String.format("Receiving SMS is blocked => { From: %s, SMS Body: %s }", smsFrom, smsBody));
             }
 
         }
@@ -98,13 +98,4 @@ public class CallReceiver extends BroadcastReceiver {
         return msgs;
     }
 
-    private String trimSmsNumber(String prefix, String number) {
-        String s = number;
-
-        if (prefix.length() > 0 && number.startsWith(prefix)) {
-            s = number.substring(prefix.length());
-        }
-
-        return s;
-    }
 }
