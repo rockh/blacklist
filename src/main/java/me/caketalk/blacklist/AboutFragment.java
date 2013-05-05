@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockFragment;
+import me.caketalk.R;
 
 /**
  * @author Rock created at 12:40 04/04/13

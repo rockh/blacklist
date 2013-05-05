@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragment;
+import me.caketalk.R;
 import me.caketalk.blacklist.dao.BlacklistDao;
 import me.caketalk.blacklist.model.Blacklist;
 

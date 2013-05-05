@@ -10,6 +10,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockListFragment;
+import me.caketalk.R;
 import me.caketalk.blacklist.dao.BlacklistDao;
 
 import java.util.HashMap;

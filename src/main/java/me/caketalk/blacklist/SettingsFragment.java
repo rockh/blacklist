@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 import com.actionbarsherlock.app.SherlockFragment;
+import me.caketalk.R;
 import me.caketalk.blacklist.service.BlacklistService;
 import me.caketalk.blacklist.util.ServiceUtil;
 
