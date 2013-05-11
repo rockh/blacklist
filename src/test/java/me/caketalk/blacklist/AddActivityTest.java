@@ -1,10 +1,10 @@
 package me.caketalk.blacklist;
 
-import com.xtremelabs.robolectric.RobolectricTestRunner;
 import me.caketalk.R;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 
 /**
  * @author rock created at 20:26 28/03/13

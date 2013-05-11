@@ -1,4 +1,4 @@
-package me.caketalk.blacklist.service;
+package me.caketalk.blacklist;
 
 import android.app.Service;
 import android.content.Context;
@@ -6,11 +6,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
 import android.telephony.TelephonyManager;
-import android.text.style.SuperscriptSpan;
 import android.util.Log;
-import android.widget.Toast;
 import com.android.internal.telephony.ITelephony;
-import me.caketalk.blacklist.CallReceiver;
 
 import java.lang.reflect.Method;
 
@@ -18,7 +15,7 @@ import java.lang.reflect.Method;
  * @author Rock Huang
  * @version 0.1
  */
-public class BlacklistService extends Service {
+public class CallReceiverService extends Service {
 
     private CallReceiver callReceiver;
 
@@ -43,16 +40,16 @@ public class BlacklistService extends Service {
             intentFilter.addAction("android.intent.action.PHONE_STATE");
             intentFilter.addAction("android.provider.Telephony.SMS_RECEIVED");
             registerReceiver(callReceiver, intentFilter);
-            Log.i("BlacklistService", "BlacklistService has been created.");
+            Log.i("CallReceiverService", "CallReceiverService has been created.");
         } catch (Exception e) {
-            Log.w("BlacklistService::onCreate", e);
+            Log.w("CallReceiverService::onCreate", e);
         }
     }
 
     public void onDestroy() {
         super.onDestroy();
         unregisterReceiver(callReceiver);
-        Log.i("BlacklistService", "BlacklistService has been destroyed.");
+        Log.i("CallReceiverService", "CallReceiverService has been destroyed.");
     }
 
 }

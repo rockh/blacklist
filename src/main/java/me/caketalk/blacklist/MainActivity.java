@@ -1,11 +1,7 @@
 package me.caketalk.blacklist;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.ActionMode;
@@ -14,6 +10,7 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.google.ads.AdRequest;
 import com.google.ads.AdView;
+import me.caketalk.R;
 
 /**
  * @author Rock created at 16:34 03/04/13
@@ -81,6 +78,10 @@ public class MainActivity extends SherlockFragmentActivity {
         return true;
     }
 
+    public ActionMode getActMode() {
+        return this.actMode;
+    }
+
     private final class MyActionMode implements ActionMode.Callback {
         private int resourceId;
         public MyActionMode(int resourceId) {
@@ -89,6 +90,7 @@ public class MainActivity extends SherlockFragmentActivity {
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             mode.setTitle(resourceId);
+            mode.setSubtitle(null);
             return true;
         }
         @Override
@@ -97,19 +99,11 @@ public class MainActivity extends SherlockFragmentActivity {
         }
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            Toast.makeText(MainActivity.this, "Got click: " + item, Toast.LENGTH_SHORT).show();
-            mode.finish();
             return true;
         }
         @Override
         public void onDestroyActionMode(ActionMode mode) {
             onBackPressed(); // trig back button to previous fragment.
-
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            View v = MainActivity.this.getCurrentFocus();
-            if (v != null) {
-                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-            }
         }
     }
 

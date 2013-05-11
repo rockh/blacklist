@@ -5,6 +5,9 @@ A simple app for block annoying and unwanted incoming calls and SMS.
 
 Change Log
 ============
+## Version 0.3 (2013-5-11)
+  - Viewing intercepted history
+  - Fixing bugs.
 ## Version 0.2 (2013-4-4)
   - Using action bar design pattern
   - Blocking unwanted SMS.

@@ -18,4 +18,13 @@
               android:textSize="20dip"
               android:textStyle="bold" />
 
+    <TextView android:id="@+id/historyCounts"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentRight="true"
+              android:layout_centerVertical="true"
+              android:background="@drawable/rounded_corners"
+              android:paddingLeft="3dip"
+              android:paddingRight="3dip"/>
+
 </RelativeLayout>

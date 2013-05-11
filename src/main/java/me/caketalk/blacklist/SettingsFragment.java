@@ -12,8 +12,6 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 import com.actionbarsherlock.app.SherlockFragment;
 import me.caketalk.R;
-import me.caketalk.blacklist.service.BlacklistService;
-import me.caketalk.blacklist.util.ServiceUtil;
 
 /**
  * @author Rock created at 12:24 04/04/13
@@ -25,9 +23,9 @@ public class SettingsFragment extends SherlockFragment {
         View v = inflater.inflate(R.layout.setting, container, false);
         final FragmentActivity activity = getActivity();
 
-        // setting radio button status if Blacklist service is running
+        // setting radio button status if Blacklist manager is running
         final ToggleButton tglBlacklist = (ToggleButton) v.findViewById(R.id.tglBlacklistService);
-        if (ServiceUtil.isServiceRunning(activity, BlacklistService.class.getName())) {
+        if (AndrServiceHelper.isServiceRunning(activity, CallReceiverService.class.getName())) {
             tglBlacklist.setChecked(true);
         }
 
@@ -35,7 +33,7 @@ public class SettingsFragment extends SherlockFragment {
             @Override
             public void onClick(View view) {
                 if (((ToggleButton) view).isChecked()) {
-                    activity.startService(new Intent(activity, BlacklistService.class));
+                    activity.startService(new Intent(activity, CallReceiverService.class));
                     Toast.makeText(activity, "Blacklist service has been enabled.", Toast.LENGTH_LONG).show();
                 } else {
                     AlertDialog.Builder b = new AlertDialog.Builder(activity);
@@ -44,7 +42,7 @@ public class SettingsFragment extends SherlockFragment {
                     b.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            activity.stopService(new Intent(activity, BlacklistService.class));
+                            activity.stopService(new Intent(activity, CallReceiverService.class));
                             Toast.makeText(activity, "Blacklist service has been disabled.", Toast.LENGTH_LONG).show();
                         }
                     });

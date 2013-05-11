@@ -13,7 +13,7 @@ import android.util.Log;
 public abstract class BaseDao extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "blacklist.db";
-    private static final int DB_VERSION = 3;
+    private static final int DB_VERSION = 4;
 
     protected static final String T_BLACKLIST = "Blacklist";
 
@@ -25,11 +25,18 @@ public abstract class BaseDao extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + T_BLACKLIST + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR, phone VARCHAR, block_opt_id INTEGER DEFAULT 0, comment VARCHAR, created_date DATETIME DEFAULT CURRENT_TIMESTAMP)");
-        Log.i(this.getClass().getName(), String.format("%s database has been created.", DB_NAME));
+        db.execSQL("CREATE TABLE history (_id INTEGER PRIMARY KEY AUTOINCREMENT, number VARCHAR, action INTEGER DEFAULT 2, detail VARCHAR, created_date DATETIME DEFAULT CURRENT_TIMESTAMP)");
+        Log.i(this.getClass().getName(), "tables[Blacklist, History] have been created.");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if (oldVersion == 3) {
+            db.execSQL("CREATE TABLE history (_id INTEGER PRIMARY KEY AUTOINCREMENT, number VARCHAR, action INTEGER DEFAULT 2, detail VARCHAR, created_date DATETIME DEFAULT CURRENT_TIMESTAMP)");
+            Log.d(this.getClass().getName(), ">> Upgraded database from v3 to v4.");
+            return;
+        }
+
         String _id = oldVersion > 1 ? "_id" : "id";
         Log.d(this.getClass().getName(), String.format("oldVersion: %s, newVersion: %s, ID Field: %s", oldVersion, newVersion, _id));
         Log.d(this.getClass().getName(), ">> Database upgrading ... ");
@@ -45,6 +52,8 @@ public abstract class BaseDao extends SQLiteOpenHelper {
         Log.d(this.getClass().getName(), ">> Copy data from TempList to new Blacklist table ... ");
         db.execSQL("DROP TABLE TEMPLIST;");
         Log.d(this.getClass().getName(), ">> Drop table TempList ...");
+        db.execSQL("CREATE TABLE history (_id INTEGER PRIMARY KEY AUTOINCREMENT, number VARCHAR, action INTEGER DEFAULT 2, detail VARCHAR, created_date DATETIME DEFAULT CURRENT_TIMESTAMP)");
+        Log.d(this.getClass().getName(), ">> Create table History ...");
         Log.d(this.getClass().getName(), ">> Database has been upgraded. END.");
     }
 

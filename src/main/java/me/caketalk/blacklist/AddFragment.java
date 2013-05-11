@@ -1,6 +1,7 @@
 package me.caketalk.blacklist;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -15,6 +17,7 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragment;
 import me.caketalk.R;
 import me.caketalk.blacklist.dao.BlacklistDao;
+import me.caketalk.blacklist.dao.IBlacklistDao;
 import me.caketalk.blacklist.model.Blacklist;
 
 import java.util.HashMap;
@@ -34,7 +37,7 @@ public class AddFragment extends SherlockFragment {
 
         View v = inflater.inflate(R.layout.add, container, false);
 
-        final BlacklistDao dao = new BlacklistDao(getActivity());
+        final IBlacklistDao dao = new BlacklistDao(getActivity());
 
         // initializing controls
         etPhoneNumber = (EditText) v.findViewById(R.id.etPhone);
@@ -186,6 +189,12 @@ public class AddFragment extends SherlockFragment {
         super.onResume();
     }
 
+    @Override
+    public void onDestroyView() {
+        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(etPhoneNumber.getWindowToken(), 0);
+        super.onDestroyView();
+    }
 
     /********************** private methods **********************/
 

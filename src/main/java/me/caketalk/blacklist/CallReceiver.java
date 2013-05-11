@@ -9,6 +9,10 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import com.android.internal.telephony.ITelephony;
 import me.caketalk.blacklist.dao.BlacklistDao;
+import me.caketalk.blacklist.dao.IBlacklistDao;
+import me.caketalk.blacklist.manager.BlacklistManager;
+import me.caketalk.blacklist.manager.IBlacklistManager;
+import me.caketalk.blacklist.model.PhoneAction;
 
 import java.util.Date;
 
@@ -21,11 +25,13 @@ public class CallReceiver extends BroadcastReceiver {
     private final static String TAG = "me.caketalk.blacklist.CallReceiver";
 
     private ITelephony telephony;
-    private BlacklistDao dao;
+    private IBlacklistDao dao;
+    private IBlacklistManager manager;
 
     public CallReceiver(ITelephony telephony, Context ctx) {
         this.telephony = telephony;
         this.dao = new BlacklistDao(ctx);
+        this.manager = new BlacklistManager(ctx);
     }
 
     @Override
@@ -47,6 +53,8 @@ public class CallReceiver extends BroadcastReceiver {
             if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_RINGING) && blockCall) {
                 try {
                     telephony.endCall();
+                    // records history
+                    manager.recordsHistory(incomingNumber, PhoneAction.CALL, null);
                     Log.d(CallReceiver.class.getName(), String.format("# Blocked a phone call => { number:%s, date:%s }", incomingNumber, new Date()));
                 } catch (Exception e) {
                     Log.w(this.getClass().getName(), e);
@@ -63,6 +71,7 @@ public class CallReceiver extends BroadcastReceiver {
             Log.d(CallReceiver.class.getName(), "Block option id => " + blockOptId);
             if (blockOptId != -1 && blockOptId != 1) {
                 abortBroadcast();
+                manager.recordsHistory(smsFrom, PhoneAction.SMS, smsBody);
                 Log.d(TAG, String.format("Receiving SMS is blocked => { From: %s, SMS Body: %s }", smsFrom, smsBody));
             }
 

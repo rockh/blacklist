@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.*;
 import android.view.View.OnCreateContextMenuListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -12,6 +13,8 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockListFragment;
 import me.caketalk.R;
 import me.caketalk.blacklist.dao.BlacklistDao;
+import me.caketalk.blacklist.dao.IBlacklistDao;
+import me.caketalk.blacklist.model.History;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +28,7 @@ public class BlacklistFragment extends SherlockListFragment {
     // A refresh may be needed if the Blacklist ListView is changed by other Activity.
     public static boolean changed;
 
-    private BlacklistDao dao;
+    private IBlacklistDao dao;
     private SimpleAdapter adapter;
     private List<Map<String, Object>> blockedList;
 
@@ -52,6 +55,19 @@ public class BlacklistFragment extends SherlockListFragment {
                 menu.setHeaderTitle(blockedNumber);
                 menu.add(0, 0, 0, "Edit Phone Number");
                 menu.add(0, 1, 1, "Remove Phone Number");
+            }
+        });
+
+        // Go to see intercepted history records on clicking a ListView item
+        getListView().setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                HashMap phoneItem = (HashMap) adapterView.getItemAtPosition(i);
+                HistoryFragment historyFragment = new HistoryFragment();
+                Bundle args = new Bundle();
+                args.putSerializable("phoneItem", phoneItem);
+                historyFragment.setArguments(args);
+                ((MainActivity) getActivity()).replaceFragment(historyFragment, R.string.lbl_history);
             }
         });
     }
@@ -101,9 +117,9 @@ public class BlacklistFragment extends SherlockListFragment {
     /************************* Private Method ***************************/
 
     private void populateListView() {
-        blockedList = dao.getAllBlacklist();
-        String[] from = new String[] { "phone" };
-        int[] to = new int[] { R.id.blockedNumber };
+        blockedList = dao.findBlockedPhonesAndHistoryCounts();
+        String[] from = new String[] { "phone", History.TOTAL_COUNTS };
+        int[] to = new int[] { R.id.blockedNumber, R.id.historyCounts};
         adapter = new SimpleAdapter(getActivity(), blockedList, R.layout.blacklist_item, from, to);
         this.setListAdapter(adapter);
     }

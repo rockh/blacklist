@@ -1,4 +1,4 @@
-package me.caketalk.blacklist.util;
+package me.caketalk.blacklist;
 
 import android.app.ActivityManager;
 import android.content.Context;
@@ -10,11 +10,11 @@ import java.util.List;
  * @author Rock Huang
  * @version 0.1
  */
-public final class ServiceUtil {
+public final class AndrServiceHelper {
 
-    private final static String TAG = "ServiceUtil";
+    private final static String TAG = "AndrServiceHelper";
 
-    private ServiceUtil() {
+    private AndrServiceHelper() {
     }
 
     public static boolean isServiceRunning(Context context,String className) {

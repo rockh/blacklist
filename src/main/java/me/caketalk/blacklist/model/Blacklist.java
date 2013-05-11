@@ -8,11 +8,18 @@ import java.util.Date;
  */
 public class Blacklist {
 
+    public static final String TABLE_NAME = "blacklist";
     private int id;
     private String phone;
     private int blockOptId;
     private String comment;
     private Date createDate;
+
+    public Blacklist() {}
+
+    public Blacklist(String phone) {
+        this.phone = phone;
+    }
 
     public int getId() {
         return id;
