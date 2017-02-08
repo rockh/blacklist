@@ -9,10 +9,13 @@ syntax: glob
 *.swp
 Thumbs.db
 .idea/
+.gradle/
 gen-external-apklibs/
 classes/
 tmp/
 target/
+build/
 out/
 gen/
 bin/
+local.properties

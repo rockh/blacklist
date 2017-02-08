@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_clear_history"
+          android:icon="@android:drawable/ic_delete"
+          android:title="Clear"
+          android:showAsAction="ifRoom">
+        <menu>
+            <item android:id="@+id/clear_call_history"
+                  android:title="Clear call history" />
+            <item android:id="@+id/clear_sms_history"
+                  android:title="Clear SMS history" />
+            <item android:id="@+id/clear_all_history"
+                  android:title="Clear all" />
+        </menu>
+    </item>
+</menu>

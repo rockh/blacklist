@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/add" android:title="@string/menu_item_add"
+          app:showAsAction="always" android:icon="@android:drawable/ic_menu_add" />
+
+    <item android:id="@+id/more" android:title="@string/menu_item_more"
+          app:showAsAction="always"
+          android:icon="@android:drawable/ic_menu_more">
+
+        <menu>
+
+            <item android:id="@+id/settings" android:title="@string/lbl_settings" app:showAsAction="ifRoom" android:icon="@android:drawable/ic_menu_preferences" />
+
+            <item android:id="@+id/About" android:title="@string/lbl_about" app:showAsAction="ifRoom" android:icon="@android:drawable/ic_menu_info_details"/>
+
+        </menu>
+
+    </item>
+
+</menu>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:paddingLeft="16dip"
+              android:paddingRight="16dip">
+
+
+    <EditText android:id="@+id/etPhone" android:layout_width="fill_parent"
+              android:layout_height="wrap_content" android:hint="@string/et_phone"
+              android:inputType="phone" android:layout_marginTop="30dip"/>
+
+    <Spinner android:id="@+id/spnBlockOptions"
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+             android:entries="@array/block_option_arrays"
+             android:prompt="@string/block_option_prompt"/>
+
+    <Button android:id="@+id/btnAdd"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_add"/>
+
+    <Button android:id="@+id/btnRemove"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_remove"/>
+
+</LinearLayout>
