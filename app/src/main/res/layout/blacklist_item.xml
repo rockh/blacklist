@@ -24,7 +24,8 @@
               android:layout_alignParentRight="true"
               android:layout_centerVertical="true"
               android:background="@drawable/rounded_corners"
-              android:paddingLeft="3dip"
-              android:paddingRight="3dip"/>
+              android:paddingLeft="5dip"
+              android:paddingRight="5dip"
+              android:textColor="#fff"/>
 
 </RelativeLayout>

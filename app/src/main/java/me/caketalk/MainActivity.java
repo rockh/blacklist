@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setTheme(R.style.Theme_Sherlock);
         setContentView(R.layout.main);
 
         // loading Google Admod
