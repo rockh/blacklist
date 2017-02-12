@@ -3,6 +3,7 @@ package me.caketalk.blacklist;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -13,15 +14,23 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 import me.caketalk.R;
 
+import static android.content.Context.MODE_PRIVATE;
+
 /**
  * @author Rock created at 12:24 04/04/13
  */
 public class SettingsFragment extends Fragment {
 
+    public static final String SETTINGS = "settings";
+    public static final String K_SERVICE_DISABLED = "service_disabled";
+
+    private SharedPreferences preferences;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.setting, container, false);
         final FragmentActivity activity = getActivity();
+        preferences = activity.getSharedPreferences(SettingsFragment.SETTINGS, MODE_PRIVATE);
 
         // setting radio button status if Blacklist manager is running
         final ToggleButton tglBlacklist = (ToggleButton) v.findViewById(R.id.tglBlacklistService);
@@ -43,6 +52,7 @@ public class SettingsFragment extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             activity.stopService(new Intent(activity, CallReceiverService.class));
+                            preferences.edit().putBoolean(K_SERVICE_DISABLED, true).apply();
                             Toast.makeText(activity, "Blacklist service has been disabled.", Toast.LENGTH_LONG).show();
                         }
                     });

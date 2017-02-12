@@ -1,5 +1,7 @@
 package me.caketalk;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -14,12 +16,15 @@ import com.google.android.gms.ads.AdView;
 
 import me.caketalk.blacklist.AboutFragment;
 import me.caketalk.blacklist.AddFragment;
+import me.caketalk.blacklist.AndrServiceHelper;
 import me.caketalk.blacklist.BlacklistFragment;
+import me.caketalk.blacklist.CallReceiverService;
 import me.caketalk.blacklist.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActionMode actMode;
+    private SharedPreferences preferences;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +35,15 @@ public class MainActivity extends AppCompatActivity {
         AdRequest adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
         adView.loadAd(adRequest);
 
+        preferences = getSharedPreferences(SettingsFragment.SETTINGS, MODE_PRIVATE);
+        boolean serviceRunning = AndrServiceHelper.isServiceRunning(this, CallReceiverService.class.getName());
+        boolean preferDisabled = preferences.getBoolean(SettingsFragment.K_SERVICE_DISABLED, false);
+        if (!preferDisabled && !serviceRunning) {
+            // Start service if blacklist service is not disabled but has not started yet
+            System.out.println("=========>>>>>> Start service if blacklist service is not disabled but has not started yet");
+            Intent newIntent = new Intent(this, CallReceiverService.class);
+            this.startService(newIntent);
+        }
 
         if (findViewById(R.id.fragment_container) != null) {
             // if we are being restored from a previous state, then we dont need to do anything and should

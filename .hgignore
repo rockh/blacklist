@@ -10,6 +10,7 @@ syntax: glob
 Thumbs.db
 .idea/
 .gradle/
+gradle/
 gen-external-apklibs/
 classes/
 tmp/
@@ -19,3 +20,4 @@ out/
 gen/
 bin/
 local.properties
+gradlew*
