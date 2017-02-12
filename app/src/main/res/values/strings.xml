@@ -5,7 +5,7 @@
     <!-- fragments -->
     <string name="lbl_settings">Settings</string>
     <string name="lbl_add">Add new number</string>
-    <string name="lbl_about">About</string>
+    <string name="lbl_about">Privacy Policy</string>
     <string name="lbl_edit">Edit number</string>
     <string name="lbl_history">History</string>
 
@@ -37,31 +37,43 @@
     <!-- About content -->
     <string name="about_content">
         <![CDATA[
-        <h2>Blacklist 0.3</h2>
-        Build on 11 May, 2013 <br/>
-        Thank you very much for using Blacklist.
-        This is a very simple app for blocking unwanted incoming calls and SMS.
-        Any issue or feature request please send an email.<br/>
-        Email: <a href="mailto:adriftrock@gmail.com">adriftrock@gmail.com</a> <br/><br/>
+        <h4>Blacklist 0.4</h4>
+        <p>A very simple app for blocking unwanted incoming calls and SMS.</p>
+        <p>Build on 12 February, 2017</p>
 
-        <h3>Change Log</h3>
+        <hr/>
 
-        ## Version 0.3 (2013-5-11)                    <br/>
-        - Viewing intercepted history                 <br/>
-        - Fixing bugs.                                <br/><br/>
-        ## Version 0.2 (2013-4-4)                     <br/>
-        - Using action bar design pattern             <br/>
-        - Blocking unwanted SMS.                      <br/>
-        - Option for blocking calls, SMS or both.     <br/>
-        - New screen for adding/edting number.        <br/>
-        - Fixing bugs.                                <br/><br/>
-        ## Version 0.1 (2013-2-26)                    <br/>
-        - Browsing and checking blocked numbers.      <br/>
-        - Warning if turn off the Blacklist service.  <br/>
-        - Fixing bugs.                                <br/><br/>
-        ## Version 0.1-preview (2012-11-26)           <br/>
-        - Initial publishing.                         <br/>
-        - Block unwanted incoming calls.              <br/>
+        <p>This privacy policy governs your use of the software application BLACKLSIT (“Application”) for mobile devices that was created by ALDEBA. The Application allows users to block unwanted incoming calls and SMS.</p>
+
+        <h4>Automatically Collected Information</h4>
+        <p>The Application may collect certain information automatically, including, but not limited to, the type of mobile device you use, your mobile devices unique device ID, the IP address of your mobile device, your mobile operating system, the type of mobile Internet browsers you use, and information about the way you use the Application. </p>
+
+        <h4>Does the Application collect precise real time location information of the device?</h4>
+        <p>This Application does not collect precise information about the location of your mobile device. </p>
+
+        <h4>Do third parties see and/or have access to information obtained by the Application?</h4>
+        <p>Only aggregated, anonymized data is periodically transmitted to external services to help us improve the Application and our service. We will share your information with third parties only in the ways that are described in this privacy statement. We may disclose User Provided and Automatically Collected Information: as required by law, such as to comply with a subpoena, or similar legal process; when we believe in good faith that disclosure is necessary to protect our rights, protect your safety or the safety of others, investigate fraud, or respond to a government request; with our trusted services providers who work on our behalf, do not have an independent use of the information we disclose to them, and have agreed to adhere to the rules set forth in this privacy statement.</p>
+
+        <h4>What are my opt-out rights?</h4>
+        <p>You can stop all collection of information by the Application easily by uninstalling the Application. You may use the standard uninstall processes as may be available as part of your mobile device or via the mobile application marketplace or network.</p>
+
+        <h4>Data Retention Policy, Managing Your Information</h4>
+        <p>We will retain User Provided data for as long as you use the Application and for a reasonable time thereafter. We will retain Automatically Collected information for up to 24 months and thereafter may store it in aggregate. If you’d like us to delete User Provided Data that you have provided via the Application, please contact us at aldeba@live.it and we will respond in a reasonable time. Please note that some or all of the User Provided Data may be required in order for the Application to function properly.</p>
+
+        <h4>Children</h4>
+        <p>We do not use the Application to knowingly solicit data from or market to children under the age of 13. If a parent or guardian becomes aware that his or her child has provided us with information without their consent, he or she should contact us at aldeba@live.it. We will delete such information from our files within a reasonable time.</p>
+
+        <h4>Security</h4>
+        <p>We are concerned about safeguarding the confidentiality of your information. We provide physical, electronic, and procedural safeguards to protect information we process and maintain. For example, we limit access to this information to authorized employees and contractors who need to know that information in order to operate, develop or improve our Application. Please be aware that, although we endeavor provide reasonable security for information we process and maintain, no security system can prevent all potential security breaches.</p>
+
+        <h4>Changes</h4>
+        <p>This Privacy Policy may be updated from time to time for any reason. We will notify you of any changes to our Privacy Policy by posting the new Privacy Policy here and informing you via email or text message. You are advised to consult this Privacy Policy regularly for any changes, as continued use is deemed approval of all changes. You can check the history of this policy by clicking here.</p>
+
+        <h4>Your Consent</h4>
+        <p>By using the Application, you are consenting to our processing of your information as set forth in this Privacy Policy now and as amended by us. "Processing", means using cookies on a computer/hand held device or using or touching information in any way, including, but not limited to, collecting, storing, deleting, using, combining and disclosing information, all of which activities will take place in the United States. If you reside outside the United States your information will be transferred, processed and stored there under United States privacy standards. </p>
+
+        <h4>Contact us</h4>
+        <p>If you have any questions regarding privacy while using the Application, or have questions about our practices, please contact us via email at aldeba@live.it.</p>
         ]]>
     </string>
 </resources>
