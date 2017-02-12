@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.view.ActionMode;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,6 +24,8 @@ import me.caketalk.blacklist.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = MainActivity.class.getName();
+
     private ActionMode actMode;
     private SharedPreferences preferences;
 
@@ -30,20 +33,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        // loading Google Admod
-        AdView adView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
-        adView.loadAd(adRequest);
+        // Start black list service
 
         preferences = getSharedPreferences(SettingsFragment.SETTINGS, MODE_PRIVATE);
         boolean serviceRunning = AndrServiceHelper.isServiceRunning(this, CallReceiverService.class.getName());
         boolean preferDisabled = preferences.getBoolean(SettingsFragment.K_SERVICE_DISABLED, false);
+
+        Log.d(TAG, "serviceRunning -> " + serviceRunning + ", preferDisabled -> " + preferDisabled);
+
         if (!preferDisabled && !serviceRunning) {
             // Start service if blacklist service is not disabled but has not started yet
-            System.out.println("=========>>>>>> Start service if blacklist service is not disabled but has not started yet");
             Intent newIntent = new Intent(this, CallReceiverService.class);
             this.startService(newIntent);
         }
+
+        // Loading Google Admod
+
+        AdView adView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+        adView.loadAd(adRequest);
 
         if (findViewById(R.id.fragment_container) != null) {
             // if we are being restored from a previous state, then we dont need to do anything and should
